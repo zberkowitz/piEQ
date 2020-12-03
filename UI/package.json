@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/zberkowitz/piEQ#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "osc": "^2.4.1"
   }
 }
