@@ -1,1 +1,150 @@
-Hello World!!!
+<!DOCTYPE html>
+<html lang="en-us">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>piEQ</title>
+		
+		<script src="js/NexusUI.js"></script>
+	</head>
+
+	<body>
+		<div id="mainui">
+			<table>
+				<tr>
+					<td>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs0"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs1"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs2"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs3"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs4"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs5"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs6"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs7"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs8"></div>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="gs9"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p>Gain (dB)</p>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn0"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn1"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn2"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn3"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn4"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn5"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn6"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn7"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn8"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="gn9"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<script>
+			var mainui = new Nexus.Rack("#mainui");
+			
+			//set attributes 
+			mainui.gs0.resize (20, 120);
+			mainui.gs1.resize (20, 120);
+			mainui.gs2.resize (20, 120);
+			mainui.gs3.resize (20, 120);
+			mainui.gs4.resize (20, 120);
+			mainui.gs5.resize (20, 120);
+			mainui.gs6.resize (20, 120);
+			mainui.gs7.resize (20, 120);
+			mainui.gs8.resize (20, 120);
+			mainui.gs9.resize (20, 120);
+			
+			mainui.gs0.min = -12;
+			mainui.gs1.min = -12;
+			mainui.gs2.min = -12;
+			mainui.gs3.min = -12;
+			mainui.gs4.min = -12;
+			mainui.gs5.min = -12;
+			mainui.gs6.min = -12;
+			mainui.gs7.min = -12;
+			mainui.gs8.min = -12;
+			mainui.gs9.min = -12;
+			
+			mainui.gs0.max = 12;
+			mainui.gs1.max = 12;
+			mainui.gs2.max = 12;
+			mainui.gs3.max = 12;
+			mainui.gs4.max = 12;
+			mainui.gs5.max = 12;
+			mainui.gs6.max = 12;
+			mainui.gs7.max = 12;
+			mainui.gs8.max = 12;
+			mainui.gs9.max = 12;
+			
+			mainui.gs0.step = 0.1;
+			mainui.gs1.step = 0.1;
+			mainui.gs2.step = 0.1;
+			mainui.gs3.step = 0.1;
+			mainui.gs4.step = 0.1;
+			mainui.gs5.step = 0.1;
+			mainui.gs6.step = 0.1;
+			mainui.gs7.step = 0.1;
+			mainui.gs8.step = 0.1;
+			mainui.gs9.step = 0.1;
+			
+			mainui.gn0.link(mainui.gs0);
+			mainui.gn1.link(mainui.gs1);
+			mainui.gn2.link(mainui.gs2);
+			mainui.gn3.link(mainui.gs3);
+			mainui.gn4.link(mainui.gs4);
+			mainui.gn5.link(mainui.gs5);
+			mainui.gn6.link(mainui.gs6);
+			mainui.gn7.link(mainui.gs7);
+			mainui.gn8.link(mainui.gs8);
+			mainui.gn9.link(mainui.gs9);
+			
+		</script>
+	</body>
+
+</html>
