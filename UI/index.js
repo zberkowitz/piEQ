@@ -23,6 +23,7 @@ var udpPort = new osc.UDPPort({
 
 udpPort.open();
 
+//format and send control data over OSC to Pd
 function sendToPD(filter, param, value){
 	var address = "/" + filter + "/" + param;
 	udpPort.send({
@@ -36,6 +37,7 @@ function sendToPD(filter, param, value){
 	}, "localhost", 3000);
 }
 
+//handle control data from web UI
 app.post('/control', function (req, res){
 	//console.log("gotit");
 	console.log(req.body);
