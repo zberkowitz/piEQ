@@ -8,10 +8,25 @@
 		<title>piEQ</title>
 		
 		<script src="js/NexusUI.js"></script>
+		<script src="js/jquery-3.5.1.min.js"></script>
 	</head>
 
 	<body>
 		<div id="mainui">
+			<table>
+				<tr>
+					<td>
+						<p>Pre-gain (dB)</p>
+					</td>
+					<td>
+						<div nexus-ui="slider" id="pgs"></div>
+					</td>
+					<td>
+						<div nexus-ui="number" id="pgn"></div>
+					</td>
+				</tr>
+			</table>
+			<div style="height:80px;"></div>
 			<table>
 				<tr>
 					<td>
@@ -89,16 +104,21 @@
 			var mainui = new Nexus.Rack("#mainui");
 			
 			//set attributes 
-			mainui.gs0.resize (20, 120);
-			mainui.gs1.resize (20, 120);
-			mainui.gs2.resize (20, 120);
-			mainui.gs3.resize (20, 120);
-			mainui.gs4.resize (20, 120);
-			mainui.gs5.resize (20, 120);
-			mainui.gs6.resize (20, 120);
-			mainui.gs7.resize (20, 120);
-			mainui.gs8.resize (20, 120);
-			mainui.gs9.resize (20, 120);
+			
+			mainui.pgs.resize (120, 40)
+			
+			mainui.gs0.resize (40, 240);
+			mainui.gs1.resize (40, 240);
+			mainui.gs2.resize (40, 240);
+			mainui.gs3.resize (40, 240);
+			mainui.gs4.resize (40, 240);
+			mainui.gs5.resize (40, 240);
+			mainui.gs6.resize (40, 240);
+			mainui.gs7.resize (40, 240);
+			mainui.gs8.resize (40, 240);
+			mainui.gs9.resize (40, 240);
+			
+			mainui.pgs.min = -24;
 			
 			mainui.gs0.min = -12;
 			mainui.gs1.min = -12;
@@ -111,6 +131,8 @@
 			mainui.gs8.min = -12;
 			mainui.gs9.min = -12;
 			
+			mainui.pgs.max = 12;
+			
 			mainui.gs0.max = 12;
 			mainui.gs1.max = 12;
 			mainui.gs2.max = 12;
@@ -121,6 +143,8 @@
 			mainui.gs7.max = 12;
 			mainui.gs8.max = 12;
 			mainui.gs9.max = 12;
+			
+			mainui.pgs.step = 0.1;
 			
 			mainui.gs0.step = 0.1;
 			mainui.gs1.step = 0.1;
@@ -133,6 +157,8 @@
 			mainui.gs8.step = 0.1;
 			mainui.gs9.step = 0.1;
 			
+			mainui.pgn.link(mainui.pgs);
+			
 			mainui.gn0.link(mainui.gs0);
 			mainui.gn1.link(mainui.gs1);
 			mainui.gn2.link(mainui.gs2);
@@ -143,6 +169,208 @@
 			mainui.gn7.link(mainui.gs7);
 			mainui.gn8.link(mainui.gs8);
 			mainui.gn9.link(mainui.gs9);
+			
+			mainui.pgn.on('change', function(v){
+				var data = {filter: "pg", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			
+			mainui.pgs.on('change', function(v){
+				var data = {filter: "pg", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			
+			mainui.gn0.on('change', function(v){
+				var data = {filter: "f0", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn1.on('change', function(v){
+				var data = {filter: "f1", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn2.on('change', function(v){
+				var data = {filter: "f2", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn3.on('change', function(v){
+				var data = {filter: "f3", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn4.on('change', function(v){
+				var data = {filter: "f4", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn5.on('change', function(v){
+				var data = {filter: "f5", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn6.on('change', function(v){
+				var data = {filter: "f6", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn7.on('change', function(v){
+				var data = {filter: "f7", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn8.on('change', function(v){
+				var data = {filter: "f8", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gn9.on('change', function(v){
+				var data = {filter: "f9", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			
+			mainui.gs0.on('change', function(v){
+				var data = {filter: "f0", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs1.on('change', function(v){
+				var data = {filter: "f1", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs2.on('change', function(v){
+				var data = {filter: "f2", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs3.on('change', function(v){
+				var data = {filter: "f3", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs4.on('change', function(v){
+				var data = {filter: "f4", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs5.on('change', function(v){
+				var data = {filter: "f5", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs6.on('change', function(v){
+				var data = {filter: "f6", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs7.on('change', function(v){
+				var data = {filter: "f7", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs8.on('change', function(v){
+				var data = {filter: "f8", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
+			mainui.gs9.on('change', function(v){
+				var data = {filter: "f9", param: "gain", value: v};
+				$.ajax({
+					url: '/control', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				});
+			})
 			
 		</script>
 	</body>
