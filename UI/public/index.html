@@ -24,6 +24,9 @@
 					<td>
 						<div nexus-ui="number" id="pgn"></div>
 					</td>
+					<td>
+						<div nexus-ui="textbutton" id="reset"></div>
+					</td>
 				</tr>
 			</table>
 			<div style="height:80px;"></div>
@@ -170,8 +173,12 @@
 			mainui.gn8.link(mainui.gs8);
 			mainui.gn9.link(mainui.gs9);
 			
+			mainui.reset.text = "Reset";
+			
 			//function to pass control data back to node 
 			function postControl (data) {
+				console.log(data.filter);
+				console.log(data.value);
 				$.ajax({
 					url: '/control', 
 					type: "POST",
@@ -180,19 +187,25 @@
 				});
 			}
 			
-			// event handlers for GUI elements, posts json to node for OSC sending
-			mainui.pgn.on('change', function(v){
-				var data = {filter: "pg", param: "gain", value: v};
-				postControl(data);
-				
-			})
+			// event handlers for GUI elements, posts json to node for OSC 
 			
 			mainui.pgs.on('change', function(v){
 				var data = {filter: "pg", param: "gain", value: v};
 				postControl(data);
 			})
 			
-			mainui.gn0.on('change', function(v){
+			//These are listeners for the gain number boxes, but it seems only listening for the sliders is neeeded
+			
+			/*mainui.pgn.on('change', function(v){
+				var data = {filter: "pg", param: "gain", value: v};
+				postControl(data);
+				console.log("change");
+				
+			})*/
+			
+
+			
+			/*mainui.gn0.on('change', function(v){
 				var data = {filter: "f0", param: "gain", value: v};
 				postControl(data);
 			})
@@ -231,7 +244,7 @@
 			mainui.gn9.on('change', function(v){
 				var data = {filter: "f9", param: "gain", value: v};
 				postControl(data);
-			})
+			})*/
 			
 			mainui.gs0.on('change', function(v){
 				var data = {filter: "f0", param: "gain", value: v};
@@ -273,6 +286,22 @@
 				var data = {filter: "f9", param: "gain", value: v};
 				postControl(data);
 			})
+			
+			//Quick reset function
+			
+			mainui.reset.on('change', function (v){
+				if (mainui.reset.state == true){
+					reset();
+				}
+			})
+			
+			function reset(){
+				for (var i = 0; i < 10; i++){
+					var gsreset = "mainui.gs" + i + ".value = 0";
+					eval (gsreset);
+				}
+				mainui.pgs.value = 0;
+			}
 			
 		</script>
 	</body>

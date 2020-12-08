@@ -1,4 +1,4 @@
-#N canvas 1196 396 1390 949 12;
+#N canvas 2 79 2560 1276 12;
 #N canvas 0 50 668 528 dbtoa 0;
 #X obj 58 96 t b f;
 #X msg 59 129 100;
@@ -94,7 +94,7 @@
 #X connect 4 0 0 0;
 #X connect 4 1 1 0;
 #X connect 4 2 2 0;
-#X restore 336 237 pd f0_routing;
+#X restore 333 235 pd f0_routing;
 #N canvas 0 50 560 396 f1_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -105,7 +105,7 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 335 275 pd f1_routing;
+#X restore 338 269 pd f1_routing;
 #N canvas 0 50 634 429 f2_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -116,7 +116,7 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 340 309 pd f2_routing;
+#X restore 340 303 pd f2_routing;
 #N canvas 0 50 687 537 f3_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -127,7 +127,7 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 342 349 pd f3_routing;
+#X restore 342 342 pd f3_routing;
 #N canvas 0 50 677 488 f4_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -138,7 +138,7 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 346 388 pd f4_routing;
+#X restore 344 386 pd f4_routing;
 #N canvas 0 50 450 189 f5_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -149,7 +149,7 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 346 427 pd f5_routing;
+#X restore 346 421 pd f5_routing;
 #N canvas 0 50 450 189 f6_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -171,7 +171,7 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 351 492 pd f7_routing;
+#X restore 351 489 pd f7_routing;
 #N canvas 0 50 540 389 f8_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -182,7 +182,7 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 353 532 pd f8_routing;
+#X restore 356 527 pd f8_routing;
 #N canvas 0 50 450 189 f9_routing 0;
 #X obj 32 139 outlet;
 #X obj 87 139 outlet;
@@ -193,9 +193,41 @@
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
 #X connect 4 0 3 0;
-#X restore 358 574 pd f9_routing;
-#X obj 147 140 noise~;
+#X restore 355 568 pd f9_routing;
+#X obj 145 119 noise~;
+#N canvas 0 50 450 250 (subpatch) 0;
+#X array sampleL 7.44643e+006 float 2;
+#X coords 0 1 7.44643e+006 -1 200 140 1 0 0;
+#X restore 754 276 graph;
+#N canvas 0 50 450 250 (subpatch) 0;
+#X array sampleR 7.44643e+006 float 2;
+#X coords 0 1 7.44643e+006 -1 200 140 1;
+#X restore 964 276 graph;
+#X obj 755 165 soundfiler;
+#X msg 747 82 read -resize C:/Users/zberko1/Downloads/domdownload202012080406/dp/lyl.wav
+sampleL sampleR;
+#X obj 473 190 *~;
+#X obj 409 97 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 442 95 stop;
+#X obj 303 142 tabplay~ sampleL;
+#X obj 469 149 tabplay~ sampleR;
+#X obj 689 660 *~;
+#X obj 737 662 *~;
+#X obj 750 611 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 146 220 *~;
+#X obj 475 223 *~;
+#X obj 615 223 -;
+#X msg 615 191 1;
+#X obj 615 161 t b f;
+#X obj 583 224 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X text 774 610 EQ Off;
+#X obj 541 176 loadbang;
+#X msg 541 202 1;
 #X connect 0 0 24 1;
+#X connect 0 0 42 1;
 #X connect 3 0 5 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
@@ -216,8 +248,7 @@
 #X connect 21 0 22 0;
 #X connect 22 0 23 0;
 #X connect 23 0 4 1;
-#X connect 24 0 14 0;
-#X connect 24 0 3 0;
+#X connect 24 0 50 0;
 #X connect 26 0 0 0;
 #X connect 27 0 3 1;
 #X connect 27 0 14 1;
@@ -279,4 +310,28 @@
 #X connect 36 1 23 2;
 #X connect 36 2 13 3;
 #X connect 36 2 23 3;
-#X connect 37 0 24 0;
+#X connect 41 0 40 0;
+#X connect 42 0 51 0;
+#X connect 43 0 45 0;
+#X connect 43 0 46 0;
+#X connect 44 0 45 0;
+#X connect 44 0 46 0;
+#X connect 45 0 24 0;
+#X connect 45 0 47 0;
+#X connect 46 0 42 0;
+#X connect 46 0 48 0;
+#X connect 47 0 4 0;
+#X connect 48 0 4 1;
+#X connect 49 0 48 1;
+#X connect 49 0 47 1;
+#X connect 49 0 54 0;
+#X connect 50 0 3 0;
+#X connect 51 0 14 0;
+#X connect 52 0 55 0;
+#X connect 53 0 52 0;
+#X connect 54 0 53 0;
+#X connect 54 1 52 1;
+#X connect 55 0 51 1;
+#X connect 55 0 50 1;
+#X connect 57 0 58 0;
+#X connect 58 0 55 0;
