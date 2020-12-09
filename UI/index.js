@@ -48,10 +48,8 @@ app.post('/control', function (req, res){
 })
 
 app.post('/preset', function (req, res){
-	var body = '';
-	console.log("firing");
-	body += req.body;
-	fs.writeFile('presets/currentstate.txt', body, function (err){
+	var body = JSON.stringify(req.body);
+	fs.writeFile('presets/currentstate.json', body, function (err){
 		if (err) return console.log(err);
 		res.end();
 	});
