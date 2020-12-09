@@ -4,6 +4,8 @@ const express = require('express')
 const app = express()
 const port = 80
 
+var fs = require('fs')
+
 var bodyParser = require('body-parser')
 
 app.use(express.static('public'))
@@ -44,3 +46,14 @@ app.post('/control', function (req, res){
 	sendToPD(req.body.filter, req.body.param, req.body.value);
 	res.end();
 })
+
+app.post('/preset', function (req, res){
+	var body = '';
+	console.log("firing");
+	body += req.body;
+	fs.writeFile('presets/currentstate.txt', body, function (err){
+		if (err) return console.log(err);
+		res.end();
+	});
+});
+		

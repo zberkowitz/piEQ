@@ -194,58 +194,20 @@
 				postControl(data);
 			})
 			
-			//These are listeners for the gain number boxes, but it seems only listening for the sliders is neeeded
 			
-			/*mainui.pgn.on('change', function(v){
-				var data = {filter: "pg", param: "gain", value: v};
-				postControl(data);
-				console.log("change");
-				
-			})*/
+			//set change event behavior for gain sliders
 			
-
-			
-			/*mainui.gn0.on('change', function(v){
-				var data = {filter: "f0", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn1.on('change', function(v){
-				var data = {filter: "f1", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn2.on('change', function(v){
-				var data = {filter: "f2", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn3.on('change', function(v){
-				var data = {filter: "f3", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn4.on('change', function(v){
-				var data = {filter: "f4", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn5.on('change', function(v){
-				var data = {filter: "f5", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn6.on('change', function(v){
-				var data = {filter: "f6", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn7.on('change', function(v){
-				var data = {filter: "f7", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn8.on('change', function(v){
-				var data = {filter: "f8", param: "gain", value: v};
-				postControl(data);
-			})
-			mainui.gn9.on('change', function(v){
-				var data = {filter: "f9", param: "gain", value: v};
-				postControl(data);
-			})*/
-			
+			//attempt to do a loop doesn't work.
+			/*var gsData = []; //Array to hold gain slider identifiers
+			for (var i = 0; i < 9; i++){
+				var gsi = "gs" + i;
+				mainui[gsi].on('change', function(v){
+					//var index = i;
+					gsData[i] = {filter: "f" + i, param: "gain", value: v};
+					postControl(gsData[i]);
+				});
+			}
+			*/
 			mainui.gs0.on('change', function(v){
 				var data = {filter: "f0", param: "gain", value: v};
 				postControl(data);
@@ -287,6 +249,7 @@
 				postControl(data);
 			})
 			
+			
 			//Quick reset function
 			
 			mainui.reset.on('change', function (v){
@@ -297,10 +260,30 @@
 			
 			function reset(){
 				for (var i = 0; i < 10; i++){
-					var gsreset = "mainui.gs" + i + ".value = 0";
-					eval (gsreset);
+					var gsi = "gs" + i;
+					mainui[gsi].value = 0;
 				}
 				mainui.pgs.value = 0;
+			}
+			
+			//saving current state of all UI elements in JSON to store presets
+			var currentState = {};
+			
+			function setCurrentState (){
+				for (var i = 0; i < 10; i++){
+					var gsi = "gs" + i;
+					var value = mainui[gsi].value;
+					currentState[gsi] = {"value" : value};
+				}
+			}
+			
+			function saveCurrentState(){
+				$.ajax({
+					url: '/preset', 
+					type: "POST",
+					contentType: 'application/json',
+					data: JSON.stringify(currentState)
+				});
 			}
 			
 		</script>
