@@ -177,6 +177,7 @@
 			
 			//function to pass control data back to node 
 			function postControl (data) {
+				uiChanged = true; //trigger to save the state
 				console.log(data.filter);
 				console.log(data.value);
 				$.ajax({
@@ -268,23 +269,67 @@
 			
 			//saving current state of all UI elements in JSON to store presets
 			var currentState = {};
+			var uiChanged = true; //only save current state if UI changed to reduce overhead
 			
+			//set currentState JSON object and post to server (should be done on a timer)
 			function setCurrentState (){
-				for (var i = 0; i < 10; i++){
-					var gsi = "gs" + i;
-					var value = mainui[gsi].value;
-					currentState[gsi] = {"value" : value};
+				if (uiChanged){
+					for (var key in mainui){
+						if (mainui.hasOwnProperty(key)){
+							currentState[key] = {"value" : mainui[key].value}
+						}
+					}
+					$.ajax({
+						url: '/savecurrentstate', 
+						type: "POST",
+						contentType: 'application/json',
+						data: JSON.stringify(currentState)
+					});
 				}
+				uiChanged = false;
 			}
 			
-			function saveCurrentState(){
+			// function to load a preset from the server
+			function loadPreset(presetName){
 				$.ajax({
-					url: '/preset', 
+					url: '/loadpreset', 
 					type: "POST",
 					contentType: 'application/json',
-					data: JSON.stringify(currentState)
+					data: JSON.stringify({"preset" : presetName}),
+					success: function (data){
+						//console.log(data);
+						var preset = JSON.parse(data);
+						for (var key in preset){
+							if (preset.hasOwnProperty(key)){
+								mainui[key]["value"] = preset[key]["value"]; 
+							}
+						}
+					}
 				});
 			}
+			
+			//function to request the "current state", or last state the UI was in
+			function loadCurrentState(){
+				$.ajax({
+					url: '/loadcurrentstate', 
+					success: function (data){
+						//console.log(data);
+						var preset = JSON.parse(data);
+						for (var key in preset){
+							if (preset.hasOwnProperty(key)){
+								mainui[key]["value"] = preset[key]["value"]; 
+							}
+						}
+					}
+				});
+			}
+			
+			//load the previous saved state on window refresh
+			$( document ).ready(function() {
+				loadCurrentState();
+			});
+			
+			setInterval(setCurrentState, 2000); //save the current state every 2 seconds, will only fire if there are changes
 			
 		</script>
 	</body>

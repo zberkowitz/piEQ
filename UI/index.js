@@ -47,11 +47,31 @@ app.post('/control', function (req, res){
 	res.end();
 })
 
-app.post('/preset', function (req, res){
+//save current state to file
+app.post('/savecurrentstate', function (req, res){
 	var body = JSON.stringify(req.body);
-	fs.writeFile('presets/currentstate.json', body, function (err){
+	fs.writeFile('presets/currentstate/currentstate.json', body, function (err){
 		if (err) return console.log(err);
 		res.end();
+	});
+});
+
+//read a preset file and send back to client
+app.post('/loadpreset', function (req, res){
+	var filepath = "presets/" + req.body.preset + ".json";
+	//console.log (req.body);
+	fs.readFile (filepath, (err, data) => {
+		if (err) return console.log(err);
+		res.send(data);
+	});
+});
+
+//read the current state file and send back to client
+app.get('/loadcurrentstate', function (req, res){
+	var filepath = "presets/currentstate/currentstate.json"
+	fs.readFile (filepath, (err, data) => {
+		if (err) return console.log(err);
+		res.send(data);
 	});
 });
 		
