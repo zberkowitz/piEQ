@@ -9,9 +9,56 @@
 		
 		<script src="js/NexusUI.js"></script>
 		<script src="js/jquery-3.5.1.min.js"></script>
+		<style>
+			/* Preset saving popup */
+			.modal {
+				display: none; /* Hidden by default */
+				position: fixed; /* Stay in place */
+				z-index: 1; /* Sit on top */
+				padding-top: 100px; /* Location of the box */
+				left: 0;
+				top: 0;
+				width: 100%; /* Full width */
+				height: 100%; /* Full height */
+				overflow: auto; /* Enable scroll if needed */
+				background-color: rgb(0,0,0); /* Fallback color */
+				background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+			}
+			.modal-content {
+				background-color: #FFFFFF;
+				margin: auto;
+				padding: 20px;
+				border: 1px solid;
+				width: 50%;
+			}
+			.close {
+				color: #aaaaaa;
+				float: right;
+				font-size: 28px;
+				font-weight: bold;
+			}
+
+			.close:hover,
+			.close:focus {
+				color: #000;
+				text-decoration: none;
+				cursor: pointer;
+			}
+		</style>
 	</head>
 
 	<body>
+		<div id="savemodal" class="modal">
+			<!-- Modal content -->
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<form style="width:50%;margin:auto;text-align:center;">
+					<input type="text" id="savepresetname" value="Preset Name" style="margin:20px;"></input>
+					<div id="savebutton" style="margin:auto;"></div>
+				</form>
+			</div>
+		</div>
+		
 		<div id="mainui">
 			<table>
 				<tr>
@@ -26,6 +73,9 @@
 					</td>
 					<td>
 						<div nexus-ui="textbutton" id="reset"></div>
+					</td>
+					<td>
+						<div nexus-ui="textbutton" id="savepreset"></div>
 					</td>
 				</tr>
 			</table>
@@ -106,20 +156,20 @@
 		<script>
 			var mainui = new Nexus.Rack("#mainui");
 			
-			//set attributes 
+			//set attributes.  Sizes are pretty goofy on mobile landscape mode, need to make this responsive
 			
-			mainui.pgs.resize (120, 40)
+			mainui.pgs.resize (240, 80)
 			
-			mainui.gs0.resize (40, 240);
-			mainui.gs1.resize (40, 240);
-			mainui.gs2.resize (40, 240);
-			mainui.gs3.resize (40, 240);
-			mainui.gs4.resize (40, 240);
-			mainui.gs5.resize (40, 240);
-			mainui.gs6.resize (40, 240);
-			mainui.gs7.resize (40, 240);
-			mainui.gs8.resize (40, 240);
-			mainui.gs9.resize (40, 240);
+			mainui.gs0.resize (80, 480);
+			mainui.gs1.resize (80, 480);
+			mainui.gs2.resize (80, 480);
+			mainui.gs3.resize (80, 480);
+			mainui.gs4.resize (80, 480);
+			mainui.gs5.resize (80, 480);
+			mainui.gs6.resize (80, 480);
+			mainui.gs7.resize (80, 480);
+			mainui.gs8.resize (80, 480);
+			mainui.gs9.resize (80, 480);
 			
 			mainui.pgs.min = -24;
 			
@@ -174,6 +224,7 @@
 			mainui.gn9.link(mainui.gs9);
 			
 			mainui.reset.text = "Reset";
+			mainui.savepreset.text = "Save Preset";
 			
 			//function to pass control data back to node 
 			function postControl (data) {
@@ -254,7 +305,7 @@
 			//Quick reset function
 			
 			mainui.reset.on('change', function (v){
-				if (mainui.reset.state == true){
+				if (mainui.reset.state == false){
 					reset();
 				}
 			})
@@ -266,6 +317,37 @@
 				}
 				mainui.pgs.value = 0;
 			}
+			
+			
+			//Preset UI display controls.  Need to add actions and input sanitization
+			
+			var saveButton = new Nexus.TextButton('#savebutton');
+			
+			saveButton.text = "Save"
+			
+			mainui.savepreset.on('change', function (v){
+				if (mainui.savepreset.state == false){
+					$('#savemodal').css("display", "block");
+				}
+			})	
+			
+			saveButton.on('change', function (v){
+				if (saveButton.state == false){
+					$('#savemodal').css("display", "none");
+					//console.log($('#savepresetname').val());
+				}
+			})	
+			
+			$('.close').click(function(e){
+				$('.modal').css("display", "none");
+			})
+			
+			$(window).click(function(e){
+				if (e.target.className == "modal"){
+					$('.modal').css("display", "none");
+				}
+			})
+			
 			
 			//saving current state of all UI elements in JSON to store presets
 			var currentState = {};
