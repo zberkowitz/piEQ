@@ -9,6 +9,7 @@
 		
 		<script src="js/NexusUI.js"></script>
 		<script src="js/jquery-3.5.1.min.js"></script>
+		<script src="js/socket.io.js"></script>
 		<style>
 			/* Preset saving popup */
 			.modal {
@@ -227,19 +228,16 @@
 			mainui.savepreset.text = "Save Preset";
 			
 			//function to pass control data back to node 
+			var socket = io()
+			
 			function postControl (data) {
 				uiChanged = true; //trigger to save the state
 				console.log(data.filter);
 				console.log(data.value);
-				$.ajax({
-					url: '/control', 
-					type: "POST",
-					contentType: 'application/json',
-					data: JSON.stringify(data)
-				});
+				socket.emit('control', data);
 			}
 			
-			// event handlers for GUI elements, posts json to node for OSC 
+			// event handlers for GUI elements, post data through socket to node to send osc to pd 
 			
 			mainui.pgs.on('change', function(v){
 				var data = {filter: "pg", param: "gain", value: v};
@@ -412,7 +410,7 @@
 			});
 			
 			setInterval(setCurrentState, 2000); //save the current state every 2 seconds, will only fire if there are changes
-			
+						
 		</script>
 	</body>
 

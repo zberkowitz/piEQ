@@ -3,17 +3,20 @@ var osc = require('osc')
 const express = require('express')
 const app = express()
 const port = 80
+const http = require('http').createServer(app);
 
 var fs = require('fs')
 
 var bodyParser = require('body-parser')
+
+var io = require('socket.io')(http)
 
 app.use(express.static('public'))
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`piEQ listening at http://localhost:${port}`)
 })
 
@@ -39,13 +42,6 @@ function sendToPD(filter, param, value){
 	}, "localhost", 3000);
 }
 
-//handle control data from web UI
-app.post('/control', function (req, res){
-	//console.log("gotit");
-	console.log(req.body);
-	sendToPD(req.body.filter, req.body.param, req.body.value);
-	res.end();
-})
 
 //save current state to file
 app.post('/savecurrentstate', function (req, res){
@@ -73,5 +69,14 @@ app.get('/loadcurrentstate', function (req, res){
 		if (err) return console.log(err);
 		res.send(data);
 	});
+});
+
+//Socket.io connection for real-time controls
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('control', (data) => {
+	console.log (data);
+	sendToPD(data.filter, data.param, data.value);
+  });
 });
 		
