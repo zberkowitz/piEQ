@@ -46,7 +46,17 @@ function sendToPD(filter, param, value){
 //save current state to file
 app.post('/savecurrentstate', function (req, res){
 	var body = JSON.stringify(req.body);
-	fs.writeFile('presets/currentstate/currentstate.json', body, function (err){
+	fs.writeFile('currentstate/currentstate.json', body, function (err){
+		if (err) return console.log(err);
+		res.end();
+	});
+});
+
+//save a preset to a file
+app.post('/savepreset', function (req, res){
+	var body = JSON.stringify(req.body);
+	var filepath = "presets/" + req.body.name + ".json";
+	fs.writeFile(filepath, body, function (err){
 		if (err) return console.log(err);
 		res.end();
 	});
@@ -62,9 +72,18 @@ app.post('/loadpreset', function (req, res){
 	});
 });
 
+app.get('/listpresets', function (req, res){
+	fs.readdir('presets/', (err, files) => {
+		for (var i = 0; i < files.length; i++){
+			files[i] = files[i].substring(0, files[i].length - 5);
+		}
+		res.send(files);
+	});
+});
+
 //read the current state file and send back to client
 app.get('/loadcurrentstate', function (req, res){
-	var filepath = "presets/currentstate/currentstate.json"
+	var filepath = "currentstate/currentstate.json"
 	fs.readFile (filepath, (err, data) => {
 		if (err) return console.log(err);
 		res.send(data);
