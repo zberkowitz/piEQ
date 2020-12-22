@@ -633,12 +633,18 @@
 						mainui[gsi].colorize("accent", "rgba(34, 187, 187, 0.1)");
 					}
 					mainui.pgs.colorize("accent", "rgba(34, 187, 187, 0.1)");
+					
+					var data = {filter: "bypass", param: "state", value: v};
+					postControl(data);
 				}else{
 					for (var i = 0; i<10; i++){
 						var gsi = "gs" + i;
 						mainui[gsi].colorize("accent", "rgba(34, 187, 187, 1)");
 					}
 					mainui.pgs.colorize("accent", "rgba(34, 187, 187, 1)");
+					
+					var data = {filter: "bypass", param: "state", value: v};
+					postControl(data);
 				}
 			});
 			
@@ -732,9 +738,14 @@
 					for (var key in mainui){
 						if (mainui.hasOwnProperty(key)){
 							if (key == "fs0" || key == "fs9"){ //special for filter type selects
-								currentState[key] = {"value" : mainui[key].value.index}
+								currentState[key] = {"value" : mainui[key].selectedIndex}
 							}
-							currentState[key] = {"value" : mainui[key].value}
+							else if (key == "bypass"){
+								currentState[key] = {"value" : mainui[key].state};
+							}
+							else{
+								currentState[key] = {"value" : mainui[key].value}
+							}
 						}
 					}
 					$.ajax({
@@ -751,6 +762,7 @@
 			function savePreset(presetName){
 				var preset = currentState;
 				preset["name"] = presetName;
+				delete preset["bypass"]; //don't save bypass state to a preset
 				$.ajax({
 						url: '/savepreset', 
 						type: "POST",
@@ -773,7 +785,7 @@
 							if (preset.hasOwnProperty(key)){
 								if (key != "name") {
 									if (key == "fs0" || key == "fs9"){
-										mainui[key].selectedIndex = preset[key]["value"]["index"]
+										mainui[key].selectedIndex = preset[key]["value"]
 									}
 									mainui[key]["value"] = preset[key]["value"]; 
 								}
@@ -805,9 +817,15 @@
 							if (preset.hasOwnProperty(key)){
 								if (key != "name"){
 									if (key == "fs0" || key == "fs9"){
-										mainui[key].selectedIndex = preset[key]["value"]["index"]
+										mainui[key].selectedIndex = preset[key]["value"]
 									}
-									mainui[key]["value"] = preset[key]["value"];
+									else if (key == "bypass"){
+										//var bpstate = (preset[key]["value"] == 'true');
+										mainui[key].state = preset[key]["value"]
+									}
+									else{
+										mainui[key]["value"] = preset[key]["value"];
+									}
 								}
 							}
 						}
