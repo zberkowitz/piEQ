@@ -3,7 +3,10 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport">
+		<!--
+		Viewport out for now as it causes weird scaling issus on mobile
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		-->
 
 		<title>piEQ</title>
 		
@@ -610,6 +613,17 @@
 				postControl(data);
 			})
 			
+			//filter select actions
+			mainui.fs0.on('change', function(v){
+				var data = {filter: "f0", param: "type", value: v.index};
+				postControl(data);
+			})
+			
+			mainui.fs9.on('change', function(v){
+				var data = {filter: "f9", param: "type", value: v.index};
+				postControl(data);
+			})
+			
 			//bypass button
 			mainui.bypass.on('change', function (v){
 				//console.log(v);
@@ -657,6 +671,9 @@
 				mainui.fn7.value = 4000;
 				mainui.fn8.value = 8000;
 				mainui.fn9.value = 16000;
+				
+				mainui.fs0.value = "Peak";
+				mainui.fs9.value = "Peak";
 			}
 			
 			
@@ -714,6 +731,9 @@
 				if (uiChanged){
 					for (var key in mainui){
 						if (mainui.hasOwnProperty(key)){
+							if (key == "fs0" || key == "fs9"){ //special for filter type selects
+								currentState[key] = {"value" : mainui[key].value.index}
+							}
 							currentState[key] = {"value" : mainui[key].value}
 						}
 					}
@@ -752,6 +772,9 @@
 						for (var key in preset){
 							if (preset.hasOwnProperty(key)){
 								if (key != "name") {
+									if (key == "fs0" || key == "fs9"){
+										mainui[key].selectedIndex = preset[key]["value"]["index"]
+									}
 									mainui[key]["value"] = preset[key]["value"]; 
 								}
 							}
@@ -781,6 +804,9 @@
 						for (var key in preset){
 							if (preset.hasOwnProperty(key)){
 								if (key != "name"){
+									if (key == "fs0" || key == "fs9"){
+										mainui[key].selectedIndex = preset[key]["value"]["index"]
+									}
 									mainui[key]["value"] = preset[key]["value"];
 								}
 							}
