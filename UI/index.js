@@ -72,6 +72,7 @@ app.post('/loadpreset', function (req, res){
 	});
 });
 
+//get list of all presets and send back to client, stripping out ".json" from file name
 app.get('/listpresets', function (req, res){
 	fs.readdir('presets/', (err, files) => {
 		for (var i = 0; i < files.length; i++){
