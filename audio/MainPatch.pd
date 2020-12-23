@@ -214,7 +214,7 @@
 #X obj 1001 808 *~;
 #X obj 1035 809 *~;
 #X obj 1049 756 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1
-1 1;
+0 1;
 #X obj 52 143 *~;
 #X obj 478 156 *~;
 #X text 1073 755 EQ Off;
@@ -237,7 +237,7 @@
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
 #X restore 493 87 pd inverse;
-#X obj 494 116 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 494 116 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #N canvas 302 129 295 232 bp_routing 0;
 #X obj 24 25 r bp;
@@ -310,6 +310,8 @@
 #X restore 897 651 pd f9_routing;
 #X obj 433 719 lop~;
 #X obj 868 716 lop~;
+#X msg 772 64 \; pd dsp 1;
+#X obj 771 20 loadbang;
 #X connect 0 0 20 1;
 #X connect 0 0 32 1;
 #X connect 2 0 46 0;
@@ -462,3 +464,4 @@
 #X connect 65 5 63 1;
 #X connect 66 0 58 0;
 #X connect 67 0 63 0;
+#X connect 69 0 68 0;
