@@ -18,7 +18,7 @@
 			.modal {
 				display: none; /* Hidden by default */
 				position: fixed; /* Stay in place */
-				z-index: 1; /* Sit on top */
+				z-index: 2; /* Sit on top */
 				padding-top: 100px; /* Location of the box */
 				left: 0;
 				top: 0;
@@ -47,6 +47,22 @@
 				color: #000;
 				text-decoration: none;
 				cursor: pointer;
+			}
+			
+			.overlay {
+				display:none;
+				background:#fff; 
+				bottom:0; 
+				left:0; 
+				opacity:.5; 
+				position:absolute; 
+				right:0; 
+				top:0;
+				z-index:1;
+			}
+			
+			.peak {
+				width: 100px;
 			}
 		</style>
 	</head>
@@ -95,10 +111,16 @@
 						<p>Pre-gain (dB)</p>
 					</td>
 					<td>
-						<div nexus-ui="slider" id="pgs"></div>
+						<div style="position:relative;">
+							<div class="overlay" id="pgsoverlay"></div>
+							<div nexus-ui="slider" id="pgs"></div>
+						</div>
 					</td>
 					<td>
-						<div nexus-ui="number" id="pgn"></div>
+						<div style="position:relative;">
+							<div class="overlay" id="pgnoverlay"></div>
+							<div nexus-ui="number" id="pgn"></div>
+						</div>
 					</td>
 					<td>
 						<div nexus-ui="textbutton" id="reset"></div>
@@ -113,182 +135,203 @@
 				</tr>
 			</table>
 			<div style="height:80px;"></div>
-			<table>
-				<tr>
-					<td>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs0"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs1"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs2"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs3"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs4"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs5"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs6"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs7"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs8"></div>
-					</td>
-					<td>
-						<div nexus-ui="slider" id="gs9"></div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p>Gain (dB)</p>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn0"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn1"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn2"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn3"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn4"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn5"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn6"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn7"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn8"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="gn9"></div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p>Type</p>
-					</td>
-					<td>
-						<div nexus-ui="select" id="fs0"></div>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<p>Peak</p>
-					</td>
-					<td>
-						<div nexus-ui="select" id="fs9"></div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p>Freq (Hz)</p>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn0"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn1"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn2"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn3"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn4"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn5"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn6"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn7"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn8"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="fn9"></div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p>Q</p>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn0"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn1"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn2"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn3"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn4"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn5"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn6"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn7"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn8"></div>
-					</td>
-					<td>
-						<div nexus-ui="number" id="qn9"></div>
-					</td>
-				</tr>
-			</table>
+			<div style="position:relative;">
+				<div id="bpoverlay" class="overlay"></div>
+				<table>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<div style="position:relative;">
+								<div class="overlay" id="gs0overlay"></div>
+								<div nexus-ui="slider" id="gs0"></div>
+							</div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs1"></div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs2"></div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs3"></div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs4"></div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs5"></div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs6"></div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs7"></div>
+						</td>
+						<td>
+							<div nexus-ui="slider" id="gs8"></div>
+						</td>
+						<td>
+							<div style="position:relative;">
+								<div class="overlay" id="gs9overlay"></div>
+								<div nexus-ui="slider" id="gs9"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Gain (dB)</p>
+						</td>
+						<td>
+							<div style="position:relative;">
+								<div class="overlay" id="gn0overlay"></div>
+								<div nexus-ui="number" id="gn0"></div>
+							</div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn1"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn2"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn3"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn4"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn5"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn6"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn7"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="gn8"></div>
+						</td>
+						<td>
+							<div style="position:relative;">
+								<div class="overlay" id="gn9overlay"></div>
+								<div nexus-ui="number" id="gn9"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Type</p>
+						</td>
+						<td>
+							<div nexus-ui="select" id="fs0"></div>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td class="peak">
+							<p>Peak</p>
+						</td>
+						<td>
+							<div nexus-ui="select" id="fs9"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Freq (Hz)</p>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn0"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn1"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn2"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn3"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn4"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn5"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn6"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn7"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn8"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="fn9"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>Q</p>
+						</td>
+						<td>
+							<div style="position:relative;">
+								<div class="overlay" id="qn0overlay"></div>
+								<div nexus-ui="number" id="qn0"></div>
+							</div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn1"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn2"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn3"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn4"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn5"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn6"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn7"></div>
+						</td>
+						<td>
+							<div nexus-ui="number" id="qn8"></div>
+						</td>
+						<td>
+							<div style="position:relative;">
+								<div class="overlay" id="qn9overlay"></div>
+								<div nexus-ui="number" id="qn9"></div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 		
 		<script>
@@ -617,32 +660,42 @@
 			mainui.fs0.on('change', function(v){
 				var data = {filter: "f0", param: "type", value: v.index};
 				postControl(data);
+				
+				if (v.index == 0){
+					$('#gs0overlay, #gn0overlay, #qn0overlay').hide();
+				}else if (v.index == 1){
+					$('#gs0overlay, #gn0overlay').hide();
+					$('#qn0overlay').show();
+				}else if (v.index == 2){
+					$('#gs0overlay, #gn0overlay, #qn0overlay').show();
+				}
 			})
 			
 			mainui.fs9.on('change', function(v){
 				var data = {filter: "f9", param: "type", value: v.index};
 				postControl(data);
+				
+				if (v.index == 0){
+					$('#gs9overlay, #gn9overlay, #qn9overlay').hide();
+				}else if (v.index == 1){
+					$('#gs9overlay, #gn9overlay').hide();
+					$('#qn9overlay').show();
+				}else if (v.index == 2){
+					$('#gs9overlay, #gn9overlay, #qn9overlay').show();
+				}
 			})
 			
 			//bypass button
 			mainui.bypass.on('change', function (v){
 				//console.log(v);
 				if (v == true){
-					for (var i = 0; i<10; i++){
-						var gsi = "gs" + i;
-						mainui[gsi].colorize("accent", "rgba(34, 187, 187, 0.1)");
-					}
-					mainui.pgs.colorize("accent", "rgba(34, 187, 187, 0.1)");
+					$('#bpoverlay, #pgsoverlay, #pgnoverlay').show();
 					
 					var data = {filter: "bypass", param: "state", value: v};
 					postControl(data);
 				}else{
-					for (var i = 0; i<10; i++){
-						var gsi = "gs" + i;
-						mainui[gsi].colorize("accent", "rgba(34, 187, 187, 1)");
-					}
-					mainui.pgs.colorize("accent", "rgba(34, 187, 187, 1)");
-					
+					$('#bpoverlay, #pgsoverlay, #pgnoverlay').hide();
+		
 					var data = {filter: "bypass", param: "state", value: v};
 					postControl(data);
 				}
