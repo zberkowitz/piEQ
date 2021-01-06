@@ -28,8 +28,8 @@ var udpPort = new osc.UDPPort({
 
 udpPort.open();
 
-//format and send control data over OSC to Pd
-function sendToPD(filter, param, value){
+//format and send control data over OSC to audio engine
+function sendToAudioServer(filter, param, value){
 	var address = "/" + filter + "/" + param;
 	udpPort.send({
 		address: address,
@@ -39,7 +39,7 @@ function sendToPD(filter, param, value){
 				value: value
 			}
 		]
-	}, "localhost", 3000);
+	}, "localhost", 57120);
 }
 
 
@@ -99,8 +99,8 @@ app.get('/loadcurrentstate', function (req, res){
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('control', (data) => {
-	console.log (data);
-	sendToPD(data.filter, data.param, data.value);
+	//console.log (data);
+	sendToAudioServer(data.filter, data.param, data.value);
   });
 });
 		
