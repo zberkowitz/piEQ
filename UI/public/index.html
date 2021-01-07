@@ -148,7 +148,10 @@
 							</div>
 						</td>
 						<td>
-							<div nexus-ui="slider" id="gs1"></div>
+							<div style="position:relative;">
+								<div class="overlay" id="gs1overlay"></div>
+								<div nexus-ui="slider" id="gs1"></div>
+							</div>
 						</td>
 						<td>
 							<div nexus-ui="slider" id="gs2"></div>
@@ -169,7 +172,10 @@
 							<div nexus-ui="slider" id="gs7"></div>
 						</td>
 						<td>
-							<div nexus-ui="slider" id="gs8"></div>
+							<div style="position:relative;">
+								<div class="overlay" id="gs8overlay"></div>
+								<div nexus-ui="slider" id="gs8"></div>
+							</div>
 						</td>
 						<td>
 							<div style="position:relative;">
@@ -189,7 +195,10 @@
 							</div>
 						</td>
 						<td>
-							<div nexus-ui="number" id="gn1"></div>
+							<div style="position:relative;">
+								<div class="overlay" id="gn1overlay"></div>
+								<div nexus-ui="number" id="gn1"></div>
+							</div>
 						</td>
 						<td>
 							<div nexus-ui="number" id="gn2"></div>
@@ -210,7 +219,10 @@
 							<div nexus-ui="number" id="gn7"></div>
 						</td>
 						<td>
-							<div nexus-ui="number" id="gn8"></div>
+							<div style="position:relative;">
+								<div class="overlay" id="gn8overlay"></div>
+								<div nexus-ui="number" id="gn8"></div>
+							</div>
 						</td>
 						<td>
 							<div style="position:relative;">
@@ -226,8 +238,8 @@
 						<td>
 							<div nexus-ui="select" id="fs0"></div>
 						</td>
-						<td class="peak">
-							<p>Peak</p>
+						<td>
+							<div nexus-ui="select" id="fs1"></div>
 						</td>
 						<td class="peak">
 							<p>Peak</p>
@@ -247,8 +259,8 @@
 						<td class="peak">
 							<p>Peak</p>
 						</td>
-						<td class="peak">
-							<p>Peak</p>
+						<td>
+							<div nexus-ui="select" id="fs8"></div>
 						</td>
 						<td>
 							<div nexus-ui="select" id="fs9"></div>
@@ -300,7 +312,10 @@
 							</div>
 						</td>
 						<td>
-							<div nexus-ui="number" id="qn1"></div>
+							<div style="position:relative;">
+								<div class="overlay" id="qn1overlay"></div>
+								<div nexus-ui="number" id="qn1"></div>
+							</div>
 						</td>
 						<td>
 							<div nexus-ui="number" id="qn2"></div>
@@ -321,7 +336,10 @@
 							<div nexus-ui="number" id="qn7"></div>
 						</td>
 						<td>
-							<div nexus-ui="number" id="qn8"></div>
+							<div style="position:relative;">
+								<div class="overlay" id="qn8overlay"></div>
+								<div nexus-ui="number" id="qn8"></div>
+							</div>
 						</td>
 						<td>
 							<div style="position:relative;">
@@ -493,6 +511,8 @@
 			mainui.qn9.value = 1.41;
 			
 			mainui.fs0.defineOptions(["Peak", "Low Shelf", "High Pass"]);
+			mainui.fs1.defineOptions(["Peak", "Low Shelf"]);
+			mainui.fs8.defineOptions(["Peak", "High Shelf"]);
 			mainui.fs9.defineOptions(["Peak", "High Shelf", "Low Pass"]);
 			
 			mainui.reset.text = "Reset";
@@ -671,6 +691,34 @@
 				}
 			})
 			
+			mainui.fs1.on('change', function(v){
+				var data = {filter: "f1", param: "type", value: v.index};
+				postControl(data);
+				
+				if (v.index == 0){
+					$('#gs1overlay, #gn1overlay, #qn1overlay').hide();
+				}else if (v.index == 1){
+					$('#gs1overlay, #gn1overlay').hide();
+					$('#qn1overlay').show();
+				}else if (v.index == 2){
+					$('#gs1overlay, #gn1overlay, #qn1overlay').show();
+				}
+			})
+			
+			mainui.fs8.on('change', function(v){
+				var data = {filter: "f8", param: "type", value: v.index};
+				postControl(data);
+				
+				if (v.index == 0){
+					$('#gs8overlay, #gn8overlay, #qn8overlay').hide();
+				}else if (v.index == 1){
+					$('#gs8overlay, #gn8overlay').hide();
+					$('#qn8overlay').show();
+				}else if (v.index == 2){
+					$('#gs8overlay, #gn8overlay, #qn8overlay').show();
+				}
+			})
+			
 			mainui.fs9.on('change', function(v){
 				var data = {filter: "f9", param: "type", value: v.index};
 				postControl(data);
@@ -732,6 +780,8 @@
 				mainui.fn9.value = 16000;
 				
 				mainui.fs0.value = "Peak";
+				mainui.fs1.value = "Peak";
+				mainui.fs8.value = "Peak";
 				mainui.fs9.value = "Peak";
 			}
 			

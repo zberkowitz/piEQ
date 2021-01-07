@@ -1,11 +1,11 @@
 //Server options for Windows laptop
 
-Server.default.options.inDevice = "MME : Line 1";
-Server.default.options.outDevice = "MME : Speakers";
+//Server.default.options.inDevice = "MME : Line 1";
+//Server.default.options.outDevice = "MME : Speakers";
 
-Server.default.options.sampleRate = 48000;
+//Server.default.options.sampleRate = 48000;
 //Server.default.options.hardwareBufferSize = 1024;
-s.quit;
+//s.quit;
 //s.reboot;
 
 s.waitForBoot({
@@ -80,6 +80,36 @@ s.waitForBoot({
 			}
 		)
 	},'/f0/type');
+
+	~f1TypeReceiver = OSCFunc.newMatching({arg msg, time, addr, recvPort;
+		//msg[1].postln;
+		~filterBank[1].free;
+		switch (msg[1],
+			0.0, {
+				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freqBus, ~freqBusses[1], \gainBus, ~gainBusses[1], \rqBus, ~qBusses[1]]);
+			},
+			1.0, {
+				~filterBank[1] = Synth.before(~filterBank[2], \lowShelfFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freqBus, ~freqBusses[1], \gainBus, ~gainBusses[1]] );
+			},{
+				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freqBus, ~freqBusses[1], \gainBus, ~gainBusses[1], \rqBus, ~qBusses[1]]);
+			}
+		)
+	},'/f1/type');
+
+	~f8TypeReceiver = OSCFunc.newMatching({arg msg, time, addr, recvPort;
+		//msg[1].postln;
+		~filterBank[8].free;
+		switch (msg[1],
+			0.0, {
+				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freqBus, ~freqBusses[8], \gainBus, ~gainBusses[8], \rqBus, ~qBusses[8]]);
+			},
+			1.0, {
+				~filterBank[8] = Synth.before(~filterBank[9], \hiShelfFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freqBus, ~freqBusses[8], \gainBus, ~gainBusses[8]] );
+			},{
+				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freqBus, ~freqBusses[8], \gainBus, ~gainBusses[8], \rqBus, ~qBusses[8]]);
+			}
+		)
+	},'/f8/type');
 
 	~f9TypeReceiver = OSCFunc.newMatching({arg msg, time, addr, recvPort;
 		//msg[1].postln;
