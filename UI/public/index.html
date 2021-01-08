@@ -840,7 +840,7 @@
 				if (uiChanged){
 					for (var key in mainui){
 						if (mainui.hasOwnProperty(key)){
-							if (key == "fs0" || key == "fs9"){ //special for filter type selects
+							if (key == "fs0" || key == "fs1" || key == "fs8" || key == "fs9"){ //special for filter type selects
 								currentState[key] = {"value" : mainui[key].selectedIndex}
 							}
 							else if (key == "bypass"){
@@ -887,13 +887,14 @@
 						for (var key in preset){
 							if (preset.hasOwnProperty(key)){
 								if (key != "name") {
-									if (key == "fs0" || key == "fs9"){
+									if (key == "fs0" || key == "fs1" || key == "fs8" || key == "fs9"){
 										mainui[key].selectedIndex = preset[key]["value"]
 									}
 									mainui[key]["value"] = preset[key]["value"]; 
 								}
 							}
 						}
+						mainui.bypass.state = mainui.bypass.state; //re-emit bypass to set SC volume if loading preset while in bypass mode
 					}
 				});
 			}
@@ -919,7 +920,7 @@
 						for (var key in preset){
 							if (preset.hasOwnProperty(key)){
 								if (key != "name"){
-									if (key == "fs0" || key == "fs9"){
+									if (key == "fs0" || key == "fs1" || key == "fs8" || key == "fs9"){
 										mainui[key].selectedIndex = preset[key]["value"]
 									}
 									else if (key == "bypass"){
