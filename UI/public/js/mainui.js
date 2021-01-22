@@ -13,7 +13,7 @@ for (var i = 0; i < filterCount; i++){
 //setup response plot canvas
 var responsePlot = document.getElementById('responsePlot');
 responsePlot.width = responsePlot.parentNode.offsetWidth * window.devicePixelRatio;
-responsePlot.height = 500 * window.devicePixelRatio;
+responsePlot.height = 300 * window.devicePixelRatio;
 
 var width = responsePlot.width;
 var frequencyHz = new Float32Array(width);
@@ -44,7 +44,7 @@ function plotResponse (){
 		ctx.strokeStyle = "#CCCCCC";
 		ctx.fillStyle = "#000000";
 		ctx.lineWidth = 2;
-		ctx.font = (14 * window.devicePixelRatio) + "px sans-serif";
+		ctx.font = (11 * window.devicePixelRatio) + "px sans-serif";
 		//console.log(ctx.font);
 		for (var f = 10; f < context.sampleRate / 2; f *= 10) {
 			for (var n = 1; n < 10; n++) {
@@ -64,7 +64,12 @@ function plotResponse (){
 					x == 4e3 ||
 					x == 1e4
 				   ) {
-					ctx.fillText(x + "Hz", i, responsePlot.height - 10);
+					if (x < 1000){
+						ctx.fillText(x + "Hz", i, responsePlot.height - 10);
+					}else{
+						ctx.fillText(x/1000 + "kHz", i, responsePlot.height - 10);
+					}
+					
 				}
 			}
 		}
@@ -119,10 +124,17 @@ function plotResponse (){
 var mainui = new Nexus.Rack("#mainui");
 //set attributes.  Sizes are pretty goofy on mobile landscape mode, need to make this responsive
 
-var gsWidth = 30 * window.devicePixelRatio;
-var gsHeight = 120 * window.devicePixelRatio;
+var gsWidth = 60;
+var gsHeight = 240;
+
+var buttonWidth = 80;
+var buttonHeight = 40
 
 mainui.pgs.resize (gsHeight/2, gsWidth/1.5)
+
+mainui.preset.resize(buttonWidth, buttonHeight);
+mainui.reset.resize(buttonWidth, buttonHeight);
+
 
 mainui.gs0.resize (gsWidth, gsHeight);
 mainui.gs1.resize (gsWidth, gsHeight);
@@ -659,8 +671,11 @@ var saveButton = new Nexus.TextButton('#savebutton');
 var selectPreset = new Nexus.Select('#selectpreset');
 var loadButton = new Nexus.TextButton('#loadbutton');
 
-saveButton.text = "Save"
-loadButton.text = "Load"
+saveButton.text = "Save";
+saveButton.resize(buttonWidth, buttonHeight);
+
+loadButton.text = "Load";
+loadButton.resize(buttonWidth, buttonHeight);
 
 selectPreset.defineOptions([]);
 

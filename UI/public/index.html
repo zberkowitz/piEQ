@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		
-		<meta name="viewport" content="width=device-width, initial-scale=0.5">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 		
 
 		<title>piEQ</title>
@@ -32,7 +32,8 @@
 				margin: auto;
 				padding: 20px;
 				border: 1px solid;
-				width: 50%;
+				width: 75%;
+				text-align:center;
 			}
 			.close {
 				color: #aaaaaa;
@@ -73,7 +74,7 @@
 				<span class="close">&times;</span>
 				<!--<form style="width:50%;margin:auto;text-align:center;">-->
 				<form>
-					<table>
+					<table style="margin:auto;">
 						<tr>
 							<td>
 								<p>Save Preset</p>
@@ -103,12 +104,27 @@
 			</div>
 		</div>
 		
-		<div id="mainui" style="overflow:scroll;">
+		<div id="mainui">
 			<table>
 				<tr>
 					<td>
+						<div nexus-ui="textbutton" id="reset"></div>
+					</td>
+					<td>
+						<div nexus-ui="textbutton" id="preset"></div>
+					</td>
+					<td style="width:200px;text-align:center;">
+						<p>Bypass</p>
+						<div nexus-ui="toggle" id="bypass" style="margin:auto;"></div>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
 						<p>Pre-gain (dB)</p>
 					</td>
+				</tr>
+				<tr>
 					<td>
 						<div style="position:relative;">
 							<div class="overlay" id="pgsoverlay"></div>
@@ -121,20 +137,11 @@
 							<div nexus-ui="number" id="pgn"></div>
 						</div>
 					</td>
-					<td>
-						<div nexus-ui="textbutton" id="reset"></div>
-					</td>
-					<td>
-						<div nexus-ui="textbutton" id="preset"></div>
-					</td>
-					<td style="width:200px;text-align:center;">
-						<p>Bypass</p>
-						<div nexus-ui="toggle" id="bypass" style="margin:auto;"></div>
-					</td>
 				</tr>
+				
 			</table>
-			<div style="height:80px;"></div>
-			<div style="position:relative;">
+			<!--<div style="height:80px;"></div>-->
+			<div style="position:relative;padding-bottom:80px;padding-top:80px;overflow:scroll;">
 				<div id="bpoverlay" class="overlay"></div>
 				<table>
 					<tr>
