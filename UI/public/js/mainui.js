@@ -513,7 +513,9 @@ mainui.qn8.on('change', function(v){
 mainui.qn9.on('change', function(v){
 	var data = {filter: "f9", param: "q", value: v};
 	postControl(data);
-	filterBank[9].Q.value = v;
+	if (filterBank[9].type != "lowpass"){ //prevent setting Q for low pass on page reload
+		filterBank[9].Q.value = v;
+	}
 	plotResponse();
 })
 
