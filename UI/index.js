@@ -11,7 +11,8 @@ var bodyParser = require('body-parser')
 
 var io = require('socket.io')(http)
 
-app.use(express.static('public'))
+app.use('/scripts', express.static(__dirname + '/node_modules/'));
+app.use(express.static(__dirname + '/public'))
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
