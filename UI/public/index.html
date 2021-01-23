@@ -61,6 +61,16 @@
 				z-index:1;
 			}
 			
+			.overlayfixed{
+				display:none;
+				background:#fff; 
+				opacity:.5; 
+				z-index:1;
+				width: 1200px;
+				height: 100%;
+				position: absolute;
+			}
+			
 			.peak {
 				width: 100px;
 			}
@@ -141,8 +151,8 @@
 				
 			</table>
 			<!--<div style="height:80px;"></div>-->
-			<div style="position:relative;padding-bottom:80px;padding-top:80px;overflow:scroll;">
-				<div id="bpoverlay" class="overlay"></div>
+			<div style="position:relative;padding-bottom:80px;padding-top:80px;overflow:auto;">
+				<div id="bpoverlay" class="overlayfixed"></div>
 				<table>
 					<tr>
 						<td>
