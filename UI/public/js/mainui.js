@@ -772,8 +772,9 @@ function loadPreset(presetName){
 					if (key != "name") {
 						if (key == "fs0" || key == "fs1" || key == "fs8" || key == "fs9"){
 							mainui[key].selectedIndex = preset[key]["value"]
+						}else{
+							mainui[key]["value"] = preset[key]["value"]; 
 						}
-						mainui[key]["value"] = preset[key]["value"]; 
 					}
 				}
 			}
@@ -819,6 +820,7 @@ function loadCurrentState(){
 					}
 				}
 			}
+			mainui.bypass.state = mainui.bypass.state; //re-emit bypass to set SC volume if loading preset while in bypass mode
 		}
 	});
 	shouldDraw = true;
