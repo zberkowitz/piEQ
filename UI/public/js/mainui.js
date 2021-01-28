@@ -20,7 +20,7 @@ var frequencyHz = new Float32Array(width);
 var magResponse = new Float32Array(width);
 var phaseResponse = new Float32Array(width);
 
-var oct = 10;
+var oct = 12;
 
 //set frequencies for analysis
 for (var i = 0; i < width; i++) {
@@ -56,6 +56,8 @@ function plotResponse (){
 				ctx.moveTo(i, 0);
 				ctx.lineTo(i, responsePlot.height);
 				if (
+					x == 0.2e2 ||
+					x == 0.5e2 ||
 					x == 1e2 ||
 					x == 2e2 ||
 					x == 4e2 ||
