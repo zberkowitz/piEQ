@@ -1,12 +1,11 @@
-//Server options for Windows laptop
+//Server options for Windows
 
-//Server.default.options.inDevice = "MME : Line 1";
-//Server.default.options.outDevice = "MME : Speakers";
-
+//Server.default.options.inDevice = "Windows WASAPI : Line 1";
+//Server.default.options.outDevice = "Windows WASAPI : Headphones";
 //Server.default.options.sampleRate = 48000;
-//Server.default.options.hardwareBufferSize = 1024;
-//s.quit;
-//s.reboot;
+//Server.default.options.hardwareBufferSize = 128;
+
+//Server.killAll;
 
 s.waitForBoot({
 	// create busses
@@ -213,7 +212,7 @@ s.waitForBoot({
 
 	//Audio In to filter bank
 	SynthDef (\audioIn, {arg outBus, gainBus, switch = 1;
-		var in = In.ar(2, 2);
+		var in = SoundIn.ar([0,1]);
 		var gain = In.kr(gainBus).dbamp;
 		Out.ar(outBus, in * gain * switch);
 	}).add;
@@ -238,5 +237,3 @@ s.waitForBoot({
 
 	~out = Synth(\patchOut, [\inBus, ~audioBusses[~filterCount]], addAction: \addToTail);
 });
-
-//Server.killAll;
