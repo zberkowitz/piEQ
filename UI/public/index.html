@@ -33,7 +33,6 @@
 				padding: 20px;
 				border: 1px solid;
 				width: 75%;
-				text-align:center;
 			}
 			.close {
 				color: #aaaaaa;
@@ -66,13 +65,30 @@
 				background:#fff; 
 				opacity:.5; 
 				z-index:1;
-				width: 1200px;
+				width: 1300px;
 				height: 100%;
 				position: absolute;
 			}
 			
-			.peak {
-				width: 100px;
+			#mainui-grid{
+				display: grid;
+				grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px  100px;
+				grid-row-gap: 20px;
+				grid-column-gap: 20px;
+			}
+			
+			#preset-grid{
+				display: grid;
+				grid-template-columns: auto auto;
+				justify-content: center;
+				align-content: center;
+				grid-gap: 10px;
+			}
+			
+			#top-grid{
+				display: grid;
+				grid-template-columns: 100px 100px 100px;
+				grid-column-gap: 20px;
 			}
 		</style>
 	</head>
@@ -82,289 +98,189 @@
 			<!-- Modal content -->
 			<div class="modal-content">
 				<span class="close">&times;</span>
-				<!--<form style="width:50%;margin:auto;text-align:center;">-->
-				<form>
-					<table style="margin:auto;">
-						<tr>
-							<td>
-								<p>Save Preset</p>
-							</td>
-							<td>
-								<p>Load Preset</p>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input type="text" id="savepresetname" value="Preset Name"></input>
-							</td>
-							<td>
-								<div id="selectpreset"></div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div id="savebutton"></div>
-							</td>
-							<td>
-								<div id="loadbutton"></div>
-							</td>
-						</tr>
-					</table>
-				</form>
+				<div id="preset-grid">
+					<p>Save Preset</p>
+					<p>Load Preset</p>
+					<input type="text" id="savepresetname" value="Preset Name"></input>
+					<div id="selectpreset"></div>
+					<div id="savebutton"></div>
+					<div id="loadbutton"></div>	
+				</div>
 			</div>
 		</div>
 		
 		<div id="mainui">
-			<table>
-				<tr>
-					<td>
-						<div nexus-ui="textbutton" id="reset"></div>
-					</td>
-					<td>
-						<div nexus-ui="textbutton" id="preset"></div>
-					</td>
-					<td style="width:200px;text-align:center;">
-						<p>Bypass</p>
-						<div nexus-ui="toggle" id="bypass" style="margin:auto;"></div>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<p>Pre-gain (dB)</p>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div style="position:relative;">
-							<div class="overlay" id="pgsoverlay"></div>
-							<div nexus-ui="slider" id="pgs"></div>
-						</div>
-					</td>
-					<td>
-						<div style="position:relative;">
-							<div class="overlay" id="pgnoverlay"></div>
-							<div nexus-ui="number" id="pgn"></div>
-						</div>
-					</td>
-				</tr>
+			<div id="top-grid">
 				
-			</table>
+				<div nexus-ui="textbutton" id="reset"></div>
+			
+				<div nexus-ui="textbutton" id="preset"></div>
+				
+				<div>
+					<p>Bypass</p>
+					<div nexus-ui="toggle" id="bypass"></div>
+				</div>
+				
+				<div></div>
+				
+				<div></div>
+				
+				<p>Pre-gain (dB)</p>
+			
+				<div style="position:relative;grid-column-start:1;grid-column-end:3;">
+					<div class="overlay" id="pgsoverlay"></div>
+					<div nexus-ui="slider" id="pgs"></div>
+				</div>
+				
+				<div style="position:relative;">
+					<div class="overlay" id="pgnoverlay"></div>
+					<div nexus-ui="number" id="pgn"></div>
+				</div>
+				
+			</div>
 			<!--<div style="height:80px;"></div>-->
 			<div style="position:relative;padding-bottom:80px;padding-top:80px;overflow:auto;">
 				<div id="bpoverlay" class="overlayfixed"></div>
-				<table>
-					<tr>
-						<td>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gs0overlay"></div>
-								<div nexus-ui="slider" id="gs0"></div>
-							</div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gs1overlay"></div>
-								<div nexus-ui="slider" id="gs1"></div>
-							</div>
-						</td>
-						<td>
-							<div nexus-ui="slider" id="gs2"></div>
-						</td>
-						<td>
-							<div nexus-ui="slider" id="gs3"></div>
-						</td>
-						<td>
-							<div nexus-ui="slider" id="gs4"></div>
-						</td>
-						<td>
-							<div nexus-ui="slider" id="gs5"></div>
-						</td>
-						<td>
-							<div nexus-ui="slider" id="gs6"></div>
-						</td>
-						<td>
-							<div nexus-ui="slider" id="gs7"></div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gs8overlay"></div>
-								<div nexus-ui="slider" id="gs8"></div>
-							</div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gs9overlay"></div>
-								<div nexus-ui="slider" id="gs9"></div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>Gain (dB)</p>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gn0overlay"></div>
-								<div nexus-ui="number" id="gn0"></div>
-							</div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gn1overlay"></div>
-								<div nexus-ui="number" id="gn1"></div>
-							</div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="gn2"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="gn3"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="gn4"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="gn5"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="gn6"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="gn7"></div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gn8overlay"></div>
-								<div nexus-ui="number" id="gn8"></div>
-							</div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="gn9overlay"></div>
-								<div nexus-ui="number" id="gn9"></div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>Type</p>
-						</td>
-						<td>
-							<div nexus-ui="select" id="fs0"></div>
-						</td>
-						<td>
-							<div nexus-ui="select" id="fs1"></div>
-						</td>
-						<td class="peak">
-							<p>Peak</p>
-						</td>
-						<td class="peak">
-							<p>Peak</p>
-						</td>
-						<td class="peak">
-							<p>Peak</p>
-						</td>
-						<td class="peak">
-							<p>Peak</p>
-						</td>
-						<td class="peak">
-							<p>Peak</p>
-						</td>
-						<td class="peak">
-							<p>Peak</p>
-						</td>
-						<td>
-							<div nexus-ui="select" id="fs8"></div>
-						</td>
-						<td>
-							<div nexus-ui="select" id="fs9"></div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>Freq (Hz)</p>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn0"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn1"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn2"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn3"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn4"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn5"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn6"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn7"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn8"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="fn9"></div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>Q</p>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="qn0overlay"></div>
-								<div nexus-ui="number" id="qn0"></div>
-							</div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="qn1overlay"></div>
-								<div nexus-ui="number" id="qn1"></div>
-							</div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="qn2"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="qn3"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="qn4"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="qn5"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="qn6"></div>
-						</td>
-						<td>
-							<div nexus-ui="number" id="qn7"></div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="qn8overlay"></div>
-								<div nexus-ui="number" id="qn8"></div>
-							</div>
-						</td>
-						<td>
-							<div style="position:relative;">
-								<div class="overlay" id="qn9overlay"></div>
-								<div nexus-ui="number" id="qn9"></div>
-							</div>
-						</td>
-					</tr>
-				</table>
+				<div id="mainui-grid">
+					<div></div>
+					
+					<div style="position:relative;">
+						<div class="overlay" id="gs0overlay"></div>
+						<div nexus-ui="slider" id="gs0"></div>
+					</div>
+
+					<div style="position:relative;">
+						<div class="overlay" id="gs1overlay"></div>
+						<div nexus-ui="slider" id="gs1"></div>
+					</div>
+					<div nexus-ui="slider" id="gs2"></div>
+					<div nexus-ui="slider" id="gs3"></div>
+					<div nexus-ui="slider" id="gs4"></div>
+					<div nexus-ui="slider" id="gs5"></div>
+					<div nexus-ui="slider" id="gs6"></div>
+					<div nexus-ui="slider" id="gs7"></div>
+					<div style="position:relative;">
+						<div class="overlay" id="gs8overlay"></div>
+						<div nexus-ui="slider" id="gs8"></div>
+					</div>
+					<div style="position:relative;">
+						<div class="overlay" id="gs9overlay"></div>
+						<div nexus-ui="slider" id="gs9"></div>
+					</div>
+					
+					<p>Gain (dB)</p>
+
+					<div style="position:relative;">
+						<div class="overlay" id="gn0overlay"></div>
+						<div nexus-ui="number" id="gn0"></div>
+					</div>
+					<div style="position:relative;">
+						<div class="overlay" id="gn1overlay"></div>
+						<div nexus-ui="number" id="gn1"></div>
+					</div>
+					
+					
+					<div nexus-ui="number" id="gn2"></div>
+			
+					<div nexus-ui="number" id="gn3"></div>
+				
+					<div nexus-ui="number" id="gn4"></div>
+				
+					<div nexus-ui="number" id="gn5"></div>
+				
+					<div nexus-ui="number" id="gn6"></div>
+			
+					<div nexus-ui="number" id="gn7"></div>
+				
+					<div style="position:relative;">
+						<div class="overlay" id="gn8overlay"></div>
+						<div nexus-ui="number" id="gn8"></div>
+					</div>
+				
+					<div style="position:relative;">
+						<div class="overlay" id="gn9overlay"></div>
+						<div nexus-ui="number" id="gn9"></div>
+					</div>
+					
+					<p>Type</p>
+	
+					<div nexus-ui="select" id="fs0"></div>
+				
+					<div nexus-ui="select" id="fs1"></div>
+			
+					<p>Peak</p>
+								
+					<p>Peak</p>
+								
+					<p>Peak</p>
+						
+					<p>Peak</p>
+			
+					<p>Peak</p>
+			
+					<p>Peak</p>
+			
+					<div nexus-ui="select" id="fs8"></div>
+				
+					<div nexus-ui="select" id="fs9"></div>
+					
+					<p>Freq (Hz)</p>
+				
+					<div nexus-ui="number" id="fn0"></div>
+				
+					<div nexus-ui="number" id="fn1"></div>
+			
+					<div nexus-ui="number" id="fn2"></div>
+				
+					<div nexus-ui="number" id="fn3"></div>
+			
+					<div nexus-ui="number" id="fn4"></div>
+				
+					<div nexus-ui="number" id="fn5"></div>
+			
+					<div nexus-ui="number" id="fn6"></div>
+				
+					<div nexus-ui="number" id="fn7"></div>
+			
+					<div nexus-ui="number" id="fn8"></div>
+				
+					<div nexus-ui="number" id="fn9"></div>
+					
+					<p>Q</p>
+			
+					<div style="position:relative;">
+						<div class="overlay" id="qn0overlay"></div>
+						<div nexus-ui="number" id="qn0"></div>
+					</div>
+				
+					<div style="position:relative;">
+						<div class="overlay" id="qn1overlay"></div>
+						<div nexus-ui="number" id="qn1"></div>
+					</div>
+				
+					<div nexus-ui="number" id="qn2"></div>
+			
+					<div nexus-ui="number" id="qn3"></div>
+				
+					<div nexus-ui="number" id="qn4"></div>
+				
+					<div nexus-ui="number" id="qn5"></div>
+				
+					<div nexus-ui="number" id="qn6"></div>
+				
+					<div nexus-ui="number" id="qn7"></div>
+				
+					<div style="position:relative;">
+						<div class="overlay" id="qn8overlay"></div>
+						<div nexus-ui="number" id="qn8"></div>
+					</div>
+			
+					<div style="position:relative;">
+						<div class="overlay" id="qn9overlay"></div>
+						<div nexus-ui="number" id="qn9"></div>
+					</div>
+					
+				</div>
 			</div>
 		</div>
 		

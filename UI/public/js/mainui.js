@@ -132,7 +132,7 @@ var gsHeight = 240;
 var buttonWidth = 80;
 var buttonHeight = 40
 
-mainui.pgs.resize (gsHeight/2, gsWidth/1.5)
+mainui.pgs.resize (buttonWidth * 2, gsWidth/1.5)
 
 mainui.preset.resize(buttonWidth, buttonHeight);
 mainui.reset.resize(buttonWidth, buttonHeight);
