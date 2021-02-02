@@ -1,0 +1,79 @@
+/* Preset saving popup */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 2; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal-content {
+	background-color: #FFFFFF;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid;
+	width: 75%;
+}
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* UI overlays to prevent user interaction on bypass */
+.overlay {
+	display:none;
+	background:#fff; 
+	bottom:0; 
+	left:0; 
+	opacity:.5; 
+	position:absolute; 
+	right:0; 
+	top:0;
+	z-index:1;
+}
+
+.overlayfixed{
+	display:none;
+	background:#fff; 
+	opacity:.5; 
+	z-index:1;
+	width: 1300px;
+	height: 100%;
+	position: absolute;
+}
+
+/* Grid layouts */
+#mainui-grid{
+	display: grid;
+	grid-template-columns: 100px 100px 100px 100px 100px 100px 100px 100px 100px 100px  100px;
+	grid-row-gap: 20px;
+	grid-column-gap: 20px;
+}
+
+#preset-grid{
+	display: grid;
+	grid-template-columns: auto auto;
+	justify-content: center;
+	align-content: center;
+	grid-gap: 10px;
+}
+
+#top-grid{
+	display: grid;
+	grid-template-columns: 100px 100px 100px;
+	grid-column-gap: 20px;
+}

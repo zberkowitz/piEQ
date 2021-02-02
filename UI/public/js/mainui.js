@@ -124,7 +124,6 @@ function plotResponse (){
 //Nexus stuff
 
 var mainui = new Nexus.Rack("#mainui");
-//set attributes.  Sizes are pretty goofy on mobile landscape mode, need to make this responsive
 
 var gsWidth = 60;
 var gsHeight = 240;
@@ -136,7 +135,6 @@ mainui.pgs.resize (buttonWidth * 2, gsWidth/1.5)
 
 mainui.preset.resize(buttonWidth, buttonHeight);
 mainui.reset.resize(buttonWidth, buttonHeight);
-
 
 mainui.gs0.resize (gsWidth, gsHeight);
 mainui.gs1.resize (gsWidth, gsHeight);
@@ -310,8 +308,6 @@ mainui.fs9.defineOptions(["Peak", "High Shelf", "Low Pass"]);
 
 mainui.reset.text = "Reset";
 mainui.preset.text = "Preset";
-
-//mainui.bypass.resize(100, 80);
 			
 //function to pass control data back to node 
 var socket = io()
@@ -344,6 +340,7 @@ for (var i = 0; i < 9; i++){
 	});
 }
 */
+
 mainui.gs0.on('change', function(v){
 	var data = {filter: "f0", param: "gain", value: v};
 	postControl(data);
@@ -637,7 +634,7 @@ mainui.reset.on('change', function (v){
 
 function reset(){
 	shouldDraw = false;
-	for (var i = 0; i < 10; i++){
+	for (var i = 0; i < filterCount; i++){
 		var gsi = "gs" + i;
 		mainui[gsi].value = 0;
 		
@@ -683,7 +680,7 @@ selectPreset.defineOptions([]);
 
 mainui.preset.on('change', function (v){
 	if (mainui.preset.state == false){
-		$('#savemodal').css("display", "block");
+		$('#savemodal').show();
 		listPresets();
 	}
 })	
@@ -692,7 +689,7 @@ saveButton.on('change', function (v){
 	if (saveButton.state == false){
 		var presetName = $('#savepresetname').val();
 		savePreset(presetName);
-		$('#savemodal').css("display", "none");
+		$('#savemodal').hide();
 	}
 })	
 
@@ -700,17 +697,17 @@ loadButton.on('change', function (v){
 	if (loadButton.state == false){
 		loadPreset(selectPreset.value);
 		$('#savepresetname').val(selectPreset.value);
-		$('#savemodal').css("display", "none");
+		$('#savemodal').hide();
 	}
 })
 
 $('.close').click(function(e){
-	$('.modal').css("display", "none");
+	$('.modal').hide();
 })
 
 $(window).click(function(e){
 	if (e.target.className == "modal"){
-		$('.modal').css("display", "none");
+		$('.modal').hide();
 	}
 })
 
