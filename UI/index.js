@@ -27,6 +27,12 @@ var udpPort = new osc.UDPPort({
     metadata: true
 });
 
+udpPort.on("message", function(oscMsg, timeTag, info){
+	if (oscMsg.address == '/loadstate'){
+		currentStateOnload();
+	}
+});
+
 udpPort.open();
 
 //format and send control data over OSC to audio engine

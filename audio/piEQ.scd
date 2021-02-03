@@ -237,6 +237,11 @@ s.waitForBoot({
 	~source = Synth.before(~filterBank[0], \audioIn, [\outBus, ~audioBusses[0], \gainBus, ~pgBus]);
 
 	~out = Synth(\patchOut, [\inBus, ~audioBusses[~filterCount]], addAction: \addToTail);
+
+	//send OSC to Node to get current filter state
+
+	~nodeAddress = NetAddr.new("127.0.0.1", 3001);
+	~nodeAddress.sendMsg("/loadstate");
 });
 
 )
