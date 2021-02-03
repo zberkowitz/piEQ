@@ -104,4 +104,41 @@ io.on('connection', (socket) => {
 	sendToAudioServer(data.filter, data.param, data.value);
   });
 });
+
+//Load last saved current state and send to audio server on load
+function currentStateOnload() {
+	var filepath = "currentstate/currentstate.json";
+	fs.readFile (filepath, (err, data) => {
+		if (err) return console.log(err);
+		var object = JSON.parse(data);
+		for (var key in object) {
+			if (object.hasOwnProperty(key)){
+				if (key.includes("gn")){
+					var filterNumber = "f" + key.substring(2); //get the filter number
+					sendToAudioServer(filterNumber, "gain", object[key]["value"]);
+				}
+				else if (key.includes("qn")){
+					var filterNumber = "f" + key.substring(2);
+					sendToAudioServer(filterNumber, "q", object[key]["value"]);
+				}
+				else if (key.includes("fn")){
+					var filterNumber = "f" + key.substring(2);
+					sendToAudioServer(filterNumber, "freq", object[key]["value"]);
+				}
+				else if (key.includes("fs")){
+					var filterNumber = "f" + key.substring(2);
+					sendToAudioServer(filterNumber, "type", object[key]["value"]);
+				}
+				else if (key == "pgs"){
+					sendToAudioServer("pg", "gain", object[key]["value"]);
+				}
+				else if (key == "bypass"){
+					sendToAudioServer("bypass", "state", object[key]["value"]);
+				}
+			}
+		}
+	});
+}
+
+currentStateOnload();
 		

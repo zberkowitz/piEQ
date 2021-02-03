@@ -1,3 +1,4 @@
+(
 //Server options for Windows
 
 //Server.default.options.inDevice = "Windows WASAPI : Line 1";
@@ -237,3 +238,5 @@ s.waitForBoot({
 
 	~out = Synth(\patchOut, [\inBus, ~audioBusses[~filterCount]], addAction: \addToTail);
 });
+
+)
