@@ -111,22 +111,23 @@ function currentStateOnload() {
 	fs.readFile (filepath, (err, data) => {
 		if (err) return console.log(err);
 		var object = JSON.parse(data);
+		var filterNumber;
 		for (var key in object) {
 			if (object.hasOwnProperty(key)){
 				if (key.includes("gn")){
-					var filterNumber = "f" + key.substring(2); //get the filter number
+					filterNumber = "f" + key.substring(2); //get the filter number
 					sendToAudioServer(filterNumber, "gain", object[key]["value"]);
 				}
 				else if (key.includes("qn")){
-					var filterNumber = "f" + key.substring(2);
+					filterNumber = "f" + key.substring(2);
 					sendToAudioServer(filterNumber, "q", object[key]["value"]);
 				}
 				else if (key.includes("fn")){
-					var filterNumber = "f" + key.substring(2);
+					filterNumber = "f" + key.substring(2);
 					sendToAudioServer(filterNumber, "freq", object[key]["value"]);
 				}
 				else if (key.includes("fs")){
-					var filterNumber = "f" + key.substring(2);
+					filterNumber = "f" + key.substring(2);
 					sendToAudioServer(filterNumber, "type", object[key]["value"]);
 				}
 				else if (key == "pgs"){
