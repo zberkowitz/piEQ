@@ -160,7 +160,7 @@ s.waitForBoot({
 	}).add;
 
 
-	SynthDef (\lowShelfFilter, {arg inBus, outBus, gain, freq, scaler = 1;
+	SynthDef (\lowShelfFilter, {arg inBus, outBus, gain = 0, freq = 100, scaler = 1;
 		var in = In.ar(inBus, 2);
 		var filter = BLowShelf.ar(
 			in,
@@ -170,7 +170,7 @@ s.waitForBoot({
 		Out.ar(outBus, filter * scaler);
 	}).add;
 
-	SynthDef (\hiShelfFilter, {arg inBus, outBus, gain, freq, scaler = 1;
+	SynthDef (\hiShelfFilter, {arg inBus, outBus, gain = 0, freq = 5000, scaler = 1;
 		var in = In.ar(inBus, 2);
 		var filter = BHiShelf.ar(
 			in,
@@ -180,7 +180,7 @@ s.waitForBoot({
 		Out.ar(outBus, filter * scaler);
 	}).add;
 
-	SynthDef (\lowPassFilter, {arg inBus, outBus, freq, scaler = 1;
+	SynthDef (\lowPassFilter, {arg inBus, outBus, freq = 5000, scaler = 1;
 		var in = In.ar(inBus, 2);
 		var filter = BLowPass.ar(
 			in,
@@ -189,7 +189,7 @@ s.waitForBoot({
 		Out.ar(outBus, filter * scaler);
 	}).add;
 
-	SynthDef (\hiPassFilter, {arg inBus, outBus, freq, scaler = 1;
+	SynthDef (\hiPassFilter, {arg inBus, outBus, freq = 100, scaler = 1;
 		var in = In.ar(inBus, 2);
 		var filter = BHiPass.ar(
 			in,
