@@ -17,7 +17,7 @@ s.waitForBoot({
 	~audioBusses.do ({arg item, i; ~audioBusses[i] = Bus.audio(s, 2)});
 
 	~gainBusses = Array.newClear(~filterCount);
-	~gainBusses.do ({arg item, i; ~gainBusses[i] = Bus.control(s)});
+	~gainBusses.do ({arg item, i; ~gainBusses[i] = Bus.control(s); ~gainBusses[i].set(0)});
 
 	~tenBandFreqs = [31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
 
@@ -68,15 +68,15 @@ s.waitForBoot({
 		~filterBank[0].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[0] = Synth.before(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freqBus, ~freqBusses[0], \gainBus, ~gainBusses[0], \rqBus, ~qBusses[0]]);
+				~filterBank[0] = Synth.before(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0], \gain, ~gainBusses[0].asMap, \q, ~qBusses[0].asMap]);
 			},
 			1.0, {
-				~filterBank[0] = Synth.before(~filterBank[1], \lowShelfFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freqBus, ~freqBusses[0], \gainBus, ~gainBusses[0]] );
+				~filterBank[0] = Synth.before(~filterBank[1], \lowShelfFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap, \gain, ~gainBusses[0].asMap] );
 			},
 			2.0, {
-				~filterBank[0]= Synth.before(~filterBank[1], \hiPassFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freqBus, ~freqBusses[0]]);
+				~filterBank[0]= Synth.before(~filterBank[1], \hiPassFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap]);
 			}, {
-				~filterBank[0] = Synth.before(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freqBus, ~freqBusses[0], \gainBus, ~gainBusses[0], \rqBus, ~qBusses[0]]);
+				~filterBank[0] = Synth.before(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap, \gain, ~gainBusses[0].asMap, \q, ~qBusses[0].asMap]);
 			}
 		)
 	},'/f0/type');
@@ -86,12 +86,12 @@ s.waitForBoot({
 		~filterBank[1].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freqBus, ~freqBusses[1], \gainBus, ~gainBusses[1], \rqBus, ~qBusses[1]]);
+				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap, \q, ~qBusses[1].asMap]);
 			},
 			1.0, {
-				~filterBank[1] = Synth.before(~filterBank[2], \lowShelfFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freqBus, ~freqBusses[1], \gainBus, ~gainBusses[1]] );
+				~filterBank[1] = Synth.before(~filterBank[2], \lowShelfFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap] );
 			},{
-				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freqBus, ~freqBusses[1], \gainBus, ~gainBusses[1], \rqBus, ~qBusses[1]]);
+				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap, \q, ~qBusses[1].asMap]);
 			}
 		)
 	},'/f1/type');
@@ -101,12 +101,12 @@ s.waitForBoot({
 		~filterBank[8].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freqBus, ~freqBusses[8], \gainBus, ~gainBusses[8], \rqBus, ~qBusses[8]]);
+				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap, \q, ~qBusses[8].asMap]);
 			},
 			1.0, {
-				~filterBank[8] = Synth.before(~filterBank[9], \hiShelfFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freqBus, ~freqBusses[8], \gainBus, ~gainBusses[8]] );
+				~filterBank[8] = Synth.before(~filterBank[9], \hiShelfFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap] );
 			},{
-				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freqBus, ~freqBusses[8], \gainBus, ~gainBusses[8], \rqBus, ~qBusses[8]]);
+				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap, \q, ~qBusses[8].asMap]);
 			}
 		)
 	},'/f8/type');
@@ -116,15 +116,15 @@ s.waitForBoot({
 		~filterBank[9].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[9] = Synth.after(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freqBus, ~freqBusses[9], \gainBus, ~gainBusses[9], \rqBus, ~qBusses[9]]);
+				~filterBank[9] = Synth.after(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap, \q, ~qBusses[9].asMap]);
 			},
 			1.0, {
-				~filterBank[9] = Synth.after(~filterBank[8], \hiShelfFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freqBus, ~freqBusses[9], \gainBus, ~gainBusses[9]] );
+				~filterBank[9] = Synth.after(~filterBank[8], \hiShelfFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap] );
 			},
 			2.0, {
-				~filterBank[9]= Synth.after(~filterBank[8], \lowPassFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freqBus, ~freqBusses[9]]);
+				~filterBank[9]= Synth.after(~filterBank[8], \lowPassFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap]);
 			}, {
-				~filterBank[9] = Synth.after(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freqBus, ~freqBusses[9], \gainBus, ~gainBusses[9], \rqBus, ~qBusses[9]]);
+				~filterBank[9] = Synth.after(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap, \q, ~qBusses[9].asMap]);
 			}
 		)
 	},'/f9/type');
@@ -146,11 +146,10 @@ s.waitForBoot({
 	//SynthDefs
 
 	//Peaking Filters
-	SynthDef (\peakFilter, {arg inBus, outBus, gainBus, freqBus, rqBus, scaler = 1;
+
+	SynthDef (\peakFilter, {arg inBus, outBus, gain = 0, freq = 440, q = 1.41, scaler = 1;
 		var in = In.ar(inBus, 2);
-		var freq = In.kr(freqBus);
-		var rq = 1 / In.kr(rqBus);
-		var gain = In.kr(gainBus);
+		var rq = 1 / q;
 		var filter = BPeakEQ.ar(
 			in,
 			freq,
@@ -160,10 +159,9 @@ s.waitForBoot({
 		Out.ar(outBus, filter * scaler);
 	}).add;
 
-	SynthDef (\lowShelfFilter, {arg inBus, outBus, gainBus, freqBus, scaler = 1;
+
+	SynthDef (\lowShelfFilter, {arg inBus, outBus, gain, freq, scaler = 1;
 		var in = In.ar(inBus, 2);
-		var freq = In.kr(freqBus);
-		var gain = In.kr(gainBus);
 		var filter = BLowShelf.ar(
 			in,
 			freq: freq,
@@ -172,10 +170,8 @@ s.waitForBoot({
 		Out.ar(outBus, filter * scaler);
 	}).add;
 
-	SynthDef (\hiShelfFilter, {arg inBus, outBus, gainBus, freqBus, scaler = 1;
+	SynthDef (\hiShelfFilter, {arg inBus, outBus, gain, freq, scaler = 1;
 		var in = In.ar(inBus, 2);
-		var freq = In.kr(freqBus);
-		var gain = In.kr(gainBus);
 		var filter = BHiShelf.ar(
 			in,
 			freq: freq,
@@ -184,9 +180,8 @@ s.waitForBoot({
 		Out.ar(outBus, filter * scaler);
 	}).add;
 
-	SynthDef (\lowPassFilter, {arg inBus, outBus, freqBus, scaler = 1;
+	SynthDef (\lowPassFilter, {arg inBus, outBus, freq, scaler = 1;
 		var in = In.ar(inBus, 2);
-		var freq = In.kr(freqBus);
 		var filter = BLowPass.ar(
 			in,
 			freq: freq
@@ -194,9 +189,8 @@ s.waitForBoot({
 		Out.ar(outBus, filter * scaler);
 	}).add;
 
-	SynthDef (\hiPassFilter, {arg inBus, outBus, freqBus, scaler = 1;
+	SynthDef (\hiPassFilter, {arg inBus, outBus, freq, scaler = 1;
 		var in = In.ar(inBus, 2);
-		var freq = In.kr(freqBus);
 		var filter = BHiPass.ar(
 			in,
 			freq: freq
@@ -212,10 +206,9 @@ s.waitForBoot({
 	}).add;
 
 	//Audio In to filter bank
-	SynthDef (\audioIn, {arg outBus, gainBus, switch = 1;
+	SynthDef (\audioIn, {arg outBus, gain, switch = 1;
 		var in = SoundIn.ar([0,1]);
-		var gain = In.kr(gainBus).dbamp;
-		Out.ar(outBus, in * gain * switch);
+		Out.ar(outBus, in * gain.dbamp * switch);
 	}).add;
 
 	//Patch output of filter bank to audio device
@@ -230,13 +223,13 @@ s.waitForBoot({
 	~filterBank = Array.newClear(~filterCount);
 
 	~filterBank.do({arg item, i;
-		~filterBank[i] = Synth(\peakFilter, [\inBus, ~audioBusses[i], \outBus, ~audioBusses[i+1], \freqBus, ~freqBusses[i], \gainBus, ~gainBusses[i], \rqBus, ~qBusses[i]], addAction: \addToTail);
+		~filterBank[i] = Synth.tail(s, \peakFilter, [\inBus, ~audioBusses[i], \outBus, ~audioBusses[i+1], \freq, ~freqBusses[i].asMap, \gain, ~gainBusses[i].asMap, \q, ~qBusses[i].asMap]);
 	});
 
 	//Audio in to EQ and audio through
-	~source = Synth.before(~filterBank[0], \audioIn, [\outBus, ~audioBusses[0], \gainBus, ~pgBus]);
+	~source = Synth.before(~filterBank[0], \audioIn, [\outBus, ~audioBusses[0], \gain, ~pgBus.asMap]);
 
-	~out = Synth(\patchOut, [\inBus, ~audioBusses[~filterCount]], addAction: \addToTail);
+	~out = Synth.tail(s, \patchOut, [\inBus, ~audioBusses[~filterCount]]);
 
 	//send OSC to Node to get current filter state
 
