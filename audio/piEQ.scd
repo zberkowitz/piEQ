@@ -65,66 +65,62 @@ s.waitForBoot({
 
 	~f0TypeReceiver = OSCFunc.newMatching({arg msg, time, addr, recvPort;
 		//msg[1].postln;
-		~filterBank[0].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[0] = Synth.before(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0], \gain, ~gainBusses[0].asMap, \q, ~qBusses[0].asMap]);
+				~filterBank[0] = Synth.replace(~filterBank[0], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap, \gain, ~gainBusses[0].asMap, \q, ~qBusses[0].asMap]);
 			},
 			1.0, {
-				~filterBank[0] = Synth.before(~filterBank[1], \lowShelfFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap, \gain, ~gainBusses[0].asMap] );
+				~filterBank[0] = Synth.replace(~filterBank[0], \lowShelfFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap, \gain, ~gainBusses[0].asMap] );
 			},
 			2.0, {
-				~filterBank[0]= Synth.before(~filterBank[1], \hiPassFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap]);
+				~filterBank[0]= Synth.replace(~filterBank[0], \hiPassFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap]);
 			}, {
-				~filterBank[0] = Synth.before(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap, \gain, ~gainBusses[0].asMap, \q, ~qBusses[0].asMap]);
+				~filterBank[0] = Synth.replace(~filterBank[0], \peakFilter, [\inBus, ~audioBusses[0], \outBus, ~audioBusses[1], \freq, ~freqBusses[0].asMap, \gain, ~gainBusses[0].asMap, \q, ~qBusses[0].asMap]);
 			}
 		)
 	},'/f0/type');
 
 	~f1TypeReceiver = OSCFunc.newMatching({arg msg, time, addr, recvPort;
 		//msg[1].postln;
-		~filterBank[1].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap, \q, ~qBusses[1].asMap]);
+				~filterBank[1] = Synth.replace(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap, \q, ~qBusses[1].asMap]);
 			},
 			1.0, {
-				~filterBank[1] = Synth.before(~filterBank[2], \lowShelfFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap] );
+				~filterBank[1] = Synth.replace(~filterBank[1], \lowShelfFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap] );
 			},{
-				~filterBank[1] = Synth.before(~filterBank[2], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap, \q, ~qBusses[1].asMap]);
+				~filterBank[1] = Synth.replace(~filterBank[1], \peakFilter, [\inBus, ~audioBusses[1], \outBus, ~audioBusses[2], \freq, ~freqBusses[1].asMap, \gain, ~gainBusses[1].asMap, \q, ~qBusses[1].asMap]);
 			}
 		)
 	},'/f1/type');
 
 	~f8TypeReceiver = OSCFunc.newMatching({arg msg, time, addr, recvPort;
 		//msg[1].postln;
-		~filterBank[8].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap, \q, ~qBusses[8].asMap]);
+				~filterBank[8] = Synth.replace(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap, \q, ~qBusses[8].asMap]);
 			},
 			1.0, {
-				~filterBank[8] = Synth.before(~filterBank[9], \hiShelfFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap] );
+				~filterBank[8] = Synth.replace(~filterBank[8], \hiShelfFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap] );
 			},{
-				~filterBank[8] = Synth.before(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap, \q, ~qBusses[8].asMap]);
+				~filterBank[8] = Synth.replace(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[8], \outBus, ~audioBusses[9], \freq, ~freqBusses[8].asMap, \gain, ~gainBusses[8].asMap, \q, ~qBusses[8].asMap]);
 			}
 		)
 	},'/f8/type');
 
 	~f9TypeReceiver = OSCFunc.newMatching({arg msg, time, addr, recvPort;
 		//msg[1].postln;
-		~filterBank[9].free;
 		switch (msg[1],
 			0.0, {
-				~filterBank[9] = Synth.after(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap, \q, ~qBusses[9].asMap]);
+				~filterBank[9] = Synth.replace(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap, \q, ~qBusses[9].asMap]);
 			},
 			1.0, {
-				~filterBank[9] = Synth.after(~filterBank[8], \hiShelfFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap] );
+				~filterBank[9] = Synth.replace(~filterBank[9], \hiShelfFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap] );
 			},
 			2.0, {
-				~filterBank[9]= Synth.after(~filterBank[8], \lowPassFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap]);
+				~filterBank[9]= Synth.replace(~filterBank[9], \lowPassFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap]);
 			}, {
-				~filterBank[9] = Synth.after(~filterBank[8], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap, \q, ~qBusses[9].asMap]);
+				~filterBank[9] = Synth.replace(~filterBank[9], \peakFilter, [\inBus, ~audioBusses[9], \outBus, ~audioBusses[10], \freq, ~freqBusses[9].asMap, \gain, ~gainBusses[9].asMap, \q, ~qBusses[9].asMap]);
 			}
 		)
 	},'/f9/type');
@@ -147,7 +143,7 @@ s.waitForBoot({
 
 	//Peaking Filters
 
-	SynthDef (\peakFilter, {arg inBus, outBus, gain = 0, freq = 440, q = 1.41, scaler = 1;
+	SynthDef (\peakFilter, {arg inBus, outBus, gain = 0, freq = 440, q = 1.41;
 		var in = In.ar(inBus, 2);
 		var rq = 1 / q;
 		var filter = BPeakEQ.ar(
@@ -156,46 +152,46 @@ s.waitForBoot({
 			rq,
 			gain
 		);
-		Out.ar(outBus, filter * scaler);
+		Out.ar(outBus, filter);
 	}).add;
 
 
-	SynthDef (\lowShelfFilter, {arg inBus, outBus, gain = 0, freq = 100, scaler = 1;
+	SynthDef (\lowShelfFilter, {arg inBus, outBus, gain = 0, freq = 100;
 		var in = In.ar(inBus, 2);
 		var filter = BLowShelf.ar(
 			in,
 			freq: freq,
 			db: gain
 		);
-		Out.ar(outBus, filter * scaler);
+		Out.ar(outBus, filter);
 	}).add;
 
-	SynthDef (\hiShelfFilter, {arg inBus, outBus, gain = 0, freq = 5000, scaler = 1;
+	SynthDef (\hiShelfFilter, {arg inBus, outBus, gain = 0, freq = 5000;
 		var in = In.ar(inBus, 2);
 		var filter = BHiShelf.ar(
 			in,
 			freq: freq,
 			db: gain
 		);
-		Out.ar(outBus, filter * scaler);
+		Out.ar(outBus, filter);
 	}).add;
 
-	SynthDef (\lowPassFilter, {arg inBus, outBus, freq = 5000, scaler = 1;
+	SynthDef (\lowPassFilter, {arg inBus, outBus, freq = 5000;
 		var in = In.ar(inBus, 2);
 		var filter = BLowPass.ar(
 			in,
 			freq: freq
 		);
-		Out.ar(outBus, filter * scaler);
+		Out.ar(outBus, filter);
 	}).add;
 
-	SynthDef (\hiPassFilter, {arg inBus, outBus, freq = 100, scaler = 1;
+	SynthDef (\hiPassFilter, {arg inBus, outBus, freq = 100;
 		var in = In.ar(inBus, 2);
 		var filter = BHiPass.ar(
 			in,
 			freq: freq
 		);
-		Out.ar(outBus, filter * scaler);
+		Out.ar(outBus, filter);
 	}).add;
 
 	//for testing;
@@ -205,10 +201,10 @@ s.waitForBoot({
 		Out.ar(outBus, sine * preGain);
 	}).add;
 
-	//Audio In to filter bank
-	SynthDef (\audioIn, {arg outBus, gain, switch = 1;
+	//Audio In to filter bank w/pre-gain
+	SynthDef (\audioIn, {arg outBus, gain;
 		var in = SoundIn.ar([0,1]);
-		Out.ar(outBus, in * gain.dbamp * switch);
+		Out.ar(outBus, in * gain.dbamp);
 	}).add;
 
 	//Patch output of filter bank to audio device
