@@ -1,4 +1,4 @@
 # ignore node_modules
 
-UI/node_modules/
-UI/presets/*
+node_modules/
+

@@ -1,3 +1,65 @@
+const osc = require('osc');
+
+const express = require('express');
+const app = express();
+const port = 3000;
+const http = require('http').createServer(app);
+
+const fs = require('fs');
+const glob = require('glob');
+const path = require('path');
+
+const bodyParser = require('body-parser');
+
+const io = require('socket.io')(http);
+
+const { spawn } = require('child_process');
+
+app.use('/scripts', express.static(__dirname + '/node_modules/'));
+app.use(express.static(__dirname + '/public'))
+
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
+http.listen(port, () => {
+  console.log(`piEQ Active! Adjust settings at http://localhost:${port}`)
+});
+
+var udpPort = new osc.UDPPort({
+    localAddress: "0.0.0.0",
+    localPort: 3001,
+    metadata: true
+});
+
+udpPort.on("message", function(oscMsg, timeTag, info){
+	if (oscMsg.address == '/loadstate'){
+		currentStateOnload();
+	}
+	else if (oscMsg.address == '/exit'){
+		process.exit();
+	}
+});
+
+udpPort.open();
+
+//create directories for current states and presets
+var currentStateDir = "C:/ProgramData/piEQ/currentstate";
+var presetDir = "C:/ProgramData/piEQ/presets";
+
+if (!fs.existsSync("C:/ProgramData/piEQ")){
+	fs.mkdirSync("C:/ProgramData/piEQ");
+}
+
+if (!fs.existsSync(currentStateDir)){
+	fs.mkdirSync(currentStateDir);
+}
+
+if (!fs.existsSync(presetDir)){
+	fs.mkdirSync(presetDir);
+}
+
+//Load SuperCollider 
+var scCode = String.raw`
 (
 
 Server.killAll; //start by cleaning up any other servers just in case
@@ -260,4 +322,134 @@ s.waitForBoot({
 	~nodeAddress.sendMsg("/loadstate");
 });
 
-)
+)`
+
+//Find SC installation directory, need to add error if not found
+var scdir = glob.sync("C:/Program Files/SuperCollider-3*/");
+
+// create scd file somewhere accessible
+var scdPath = "C:/ProgramData/piEQ/audio/piEQ.scd";
+
+if (!fs.existsSync(scdPath)){
+	fs.mkdirSync("C:/ProgramData/piEQ/audio");
+	fs.writeFileSync(scdPath, scCode);
+}
+
+//Spawn supercollider with arguments.  Probably need to check for invalid args, etc.
+var arguments = process.argv.slice(2);
+arguments.unshift(scdPath);
+
+spawn("sclang.exe", arguments, {cwd: scdir[scdir.length-1]}).stdout.pipe(process.stdout);		
+
+//format and send control data over OSC to audio engine
+function sendToAudioServer(filter, param, value){
+	var address = "/" + filter + "/" + param;
+	udpPort.send({
+		address: address,
+		args: [
+			{
+				type: "f",
+				value: value
+			}
+		]
+	}, "localhost", 57120);
+}
+
+
+//save current state to file
+app.post('/savecurrentstate', function (req, res){
+	var body = JSON.stringify(req.body);
+	fs.writeFile(currentStateDir + '/currentstate.json', body, function (err){
+		if (err) return console.log(err);
+		res.end();
+	});
+});
+
+//save a preset to a file
+app.post('/savepreset', function (req, res){
+	var body = JSON.stringify(req.body);
+	var filepath = presetDir + "/" + req.body.name + ".json";
+	fs.writeFile(filepath, body, function (err){
+		if (err) return console.log(err);
+		res.end();
+	});
+});
+
+//read a preset file and send back to client
+app.post('/loadpreset', function (req, res){
+	var filepath = presetDir + "/" + req.body.preset + ".json";
+	//console.log (req.body);
+	fs.readFile (filepath, (err, data) => {
+		if (err) return console.log(err);
+		res.send(data);
+	});
+});
+
+//get list of all presets and send back to client, stripping out ".json" from file name
+app.get('/listpresets', function (req, res){
+	fs.readdir(presetDir, (err, files) => {
+		for (var i = 0; i < files.length; i++){
+			files[i] = files[i].substring(0, files[i].length - 5);
+		}
+		res.send(files);
+	});
+});
+
+//read the current state file and send back to client
+app.get('/loadcurrentstate', function (req, res){
+	var filepath = currentStateDir + "/currentstate.json"
+	fs.readFile (filepath, (err, data) => {
+		if (err) return console.log(err);
+		res.send(data);
+	});
+});
+
+//Socket.io connection for real-time controls
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('control', (data) => {
+	//console.log (data);
+	sendToAudioServer(data.filter, data.param, data.value);
+  });
+});
+
+//Load last saved current state and send to audio server on load
+function currentStateOnload() {
+	var filepath = currentStateDir + "/currentstate.json";
+	if (fs.existsSync(filepath)){
+		fs.readFile (filepath, (err, data) => {
+			if (err) return console.log(err);
+			var object = JSON.parse(data);
+			var filterNumber;
+			for (var key in object) {
+				if (object.hasOwnProperty(key)){
+					if (key.includes("gn")){
+						filterNumber = "f" + key.substring(2); //get the filter number
+						sendToAudioServer(filterNumber, "gain", object[key]["value"]);
+					}
+					else if (key.includes("qn")){
+						filterNumber = "f" + key.substring(2);
+						sendToAudioServer(filterNumber, "q", object[key]["value"]);
+					}
+					else if (key.includes("fn")){
+						filterNumber = "f" + key.substring(2);
+						sendToAudioServer(filterNumber, "freq", object[key]["value"]);
+					}
+					else if (key.includes("fs")){
+						filterNumber = "f" + key.substring(2);
+						sendToAudioServer(filterNumber, "type", object[key]["value"]);
+					}
+					else if (key == "pgs"){
+						sendToAudioServer("pg", "gain", object[key]["value"]);
+					}
+					else if (key == "bypass"){
+						sendToAudioServer("bypass", "state", object[key]["value"]);
+					}
+				}
+			}
+		});
+	}
+}
+
+currentStateOnload();
+		
