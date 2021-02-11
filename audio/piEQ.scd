@@ -1,20 +1,38 @@
 (
-
 Server.killAll; //start by cleaning up any other servers just in case
-//Server options for Windows
 
 ~nodeAddress = NetAddr.new("127.0.0.1", 3001);
 
 ~arguments = thisProcess.argv;
 ~arguments.do({arg item, i;
 	switch(item,
-		"/i", {
+		"i", {
 			Server.default.options.inDevice = ~arguments[i+1];
 		},
-		"/o", {
+		"input", {
+			Server.default.options.inDevice = ~arguments[i+1];
+		},
+		"o", {
 			Server.default.options.outDevice = ~arguments[i+1];
 		},
-		"/l", {
+		"output", {
+			Server.default.options.outDevice = ~arguments[i+1];
+		},
+		"l", {
+			"Input Devices:".postln;
+			ServerOptions.inDevices.do({arg item, i;
+				item.postln;
+			});
+			"".postln;
+			"Output Devices:".postln;
+			ServerOptions.outDevices.do({arg item, i;
+				item.postln;
+			});
+			Server.killAll;
+			~nodeAddress.sendMsg('/exit');
+			0.exit;
+		},
+		"list", {
 			"Input Devices:".postln;
 			ServerOptions.inDevices.do({arg item, i;
 				item.postln;
@@ -30,12 +48,6 @@ Server.killAll; //start by cleaning up any other servers just in case
 		}
 	);
 });
-
-//Server.default.options.inDevice = "Windows WASAPI : Line 1";
-//Server.default.options.outDevice = "Windows WASAPI : Headphones";
-//Server.default.options.sampleRate = 48000;
-//Server.default.options.hardwareBufferSize = 128;
-//Server.killAll;
 
 s.waitForBoot({
 	// create busses

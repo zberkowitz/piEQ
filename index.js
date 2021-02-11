@@ -4,14 +4,15 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
 
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
+const homedir = require('os').homedir();
 
 const bodyParser = require('body-parser');
-
-const io = require('socket.io')(http);
 
 const { spawn } = require('child_process');
 
@@ -43,11 +44,12 @@ udpPort.on("message", function(oscMsg, timeTag, info){
 udpPort.open();
 
 //create directories for current states and presets
-var currentStateDir = "C:/ProgramData/piEQ/currentstate";
-var presetDir = "C:/ProgramData/piEQ/presets";
+var dataDir = path.join(homedir, "/AppData/Local/piEQ");
+var currentStateDir = path.join(dataDir, "/currentstate");
+var presetDir = path.join(dataDir, "/presets");
 
-if (!fs.existsSync("C:/ProgramData/piEQ")){
-	fs.mkdirSync("C:/ProgramData/piEQ");
+if (!fs.existsSync(dataDir)){
+	fs.mkdirSync(dataDir);
 }
 
 if (!fs.existsSync(currentStateDir)){
@@ -61,22 +63,40 @@ if (!fs.existsSync(presetDir)){
 //Load SuperCollider 
 var scCode = String.raw`
 (
-
 Server.killAll; //start by cleaning up any other servers just in case
-//Server options for Windows
 
 ~nodeAddress = NetAddr.new("127.0.0.1", 3001);
 
 ~arguments = thisProcess.argv;
 ~arguments.do({arg item, i;
 	switch(item,
-		"/i", {
+		"i", {
 			Server.default.options.inDevice = ~arguments[i+1];
 		},
-		"/o", {
+		"input", {
+			Server.default.options.inDevice = ~arguments[i+1];
+		},
+		"o", {
 			Server.default.options.outDevice = ~arguments[i+1];
 		},
-		"/l", {
+		"output", {
+			Server.default.options.outDevice = ~arguments[i+1];
+		},
+		"l", {
+			"Input Devices:".postln;
+			ServerOptions.inDevices.do({arg item, i;
+				item.postln;
+			});
+			"".postln;
+			"Output Devices:".postln;
+			ServerOptions.outDevices.do({arg item, i;
+				item.postln;
+			});
+			Server.killAll;
+			~nodeAddress.sendMsg('/exit');
+			0.exit;
+		},
+		"list", {
 			"Input Devices:".postln;
 			ServerOptions.inDevices.do({arg item, i;
 				item.postln;
@@ -92,12 +112,6 @@ Server.killAll; //start by cleaning up any other servers just in case
 		}
 	);
 });
-
-//Server.default.options.inDevice = "Windows WASAPI : Line 1";
-//Server.default.options.outDevice = "Windows WASAPI : Headphones";
-//Server.default.options.sampleRate = 48000;
-//Server.default.options.hardwareBufferSize = 128;
-//Server.killAll;
 
 s.waitForBoot({
 	// create busses
@@ -322,18 +336,20 @@ s.waitForBoot({
 	~nodeAddress.sendMsg("/loadstate");
 });
 
-)`
+)
+`
 
 //Find SC installation directory, need to add error if not found
 var scdir = glob.sync("C:/Program Files/SuperCollider-3*/");
 
 // create scd file somewhere accessible
-var scdPath = "C:/ProgramData/piEQ/audio/piEQ.scd";
+var scdPath = path.join(dataDir, "/audio/piEQ.scd");
 
 if (!fs.existsSync(scdPath)){
-	fs.mkdirSync("C:/ProgramData/piEQ/audio");
-	fs.writeFileSync(scdPath, scCode);
+	fs.mkdirSync(path.join(dataDir, "/audio"));
 }
+
+fs.writeFileSync(scdPath, scCode);
 
 //Spawn supercollider with arguments.  Probably need to check for invalid args, etc.
 var arguments = process.argv.slice(2);
