@@ -1,15 +1,15 @@
-var osc = require('osc')
+const osc = require('osc');
 
-const express = require('express')
-const app = express()
-const port = 80
+const express = require('express');
+const app = express();
+const port = 80;
 const http = require('http').createServer(app);
 
-var fs = require('fs')
+const fs = require('fs');
 
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
-var io = require('socket.io')(http)
+const io = require('socket.io')(http);
 
 app.use('/scripts', express.static(__dirname + '/node_modules/'));
 app.use(express.static(__dirname + '/public'))
@@ -21,7 +21,7 @@ http.listen(port, () => {
   console.log(`piEQ listening at http://localhost:${port}`)
 })
 
-var udpPort = new osc.UDPPort({
+const udpPort = new osc.UDPPort({
     localAddress: "0.0.0.0",
     localPort: 3001,
     metadata: true
@@ -37,7 +37,7 @@ udpPort.open();
 
 //format and send control data over OSC to audio engine
 function sendToAudioServer(filter, param, value){
-	var address = "/" + filter + "/" + param;
+	let address = "/" + filter + "/" + param;
 	udpPort.send({
 		address: address,
 		args: [
@@ -52,7 +52,7 @@ function sendToAudioServer(filter, param, value){
 
 //save current state to file
 app.post('/savecurrentstate', function (req, res){
-	var body = JSON.stringify(req.body);
+	let body = JSON.stringify(req.body);
 	fs.writeFile('currentstate/currentstate.json', body, function (err){
 		if (err) return console.log(err);
 		res.end();
@@ -61,8 +61,8 @@ app.post('/savecurrentstate', function (req, res){
 
 //save a preset to a file
 app.post('/savepreset', function (req, res){
-	var body = JSON.stringify(req.body);
-	var filepath = "presets/" + req.body.name + ".json";
+	let body = JSON.stringify(req.body);
+	let filepath = "presets/" + req.body.name + ".json";
 	fs.writeFile(filepath, body, function (err){
 		if (err) return console.log(err);
 		res.end();
@@ -71,7 +71,7 @@ app.post('/savepreset', function (req, res){
 
 //read a preset file and send back to client
 app.post('/loadpreset', function (req, res){
-	var filepath = "presets/" + req.body.preset + ".json";
+	let filepath = "presets/" + req.body.preset + ".json";
 	//console.log (req.body);
 	fs.readFile (filepath, (err, data) => {
 		if (err) return console.log(err);
@@ -81,7 +81,7 @@ app.post('/loadpreset', function (req, res){
 
 //get list of all presets and send back to client, stripping out ".json" from file name
 app.get('/listpresets', function (req, res){
-	var dir = "presets";
+	let dir = "presets";
 	if (!fs.existsSync(dir)){ //make presets directory if it doesn't exist (otherwise returns error)
 		fs.mkdirSync(dir);
 	}
@@ -95,7 +95,7 @@ app.get('/listpresets', function (req, res){
 
 //read the current state file and send back to client
 app.get('/loadcurrentstate', function (req, res){
-	var filepath = "currentstate/currentstate.json"
+	let filepath = "currentstate/currentstate.json"
 	fs.readFile (filepath, (err, data) => {
 		if (err) return console.log(err);
 		res.send(data);
@@ -113,11 +113,11 @@ io.on('connection', (socket) => {
 
 //Load last saved current state and send to audio server on load
 function currentStateOnload() {
-	var filepath = "currentstate/currentstate.json";
+	let filepath = "currentstate/currentstate.json";
 	fs.readFile (filepath, (err, data) => {
 		if (err) return console.log(err);
-		var object = JSON.parse(data);
-		var filterNumber;
+		let object = JSON.parse(data);
+		let filterNumber;
 		for (var key in object) {
 			if (object.hasOwnProperty(key)){
 				if (key.includes("gn")){
