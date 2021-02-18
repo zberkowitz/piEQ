@@ -23,12 +23,18 @@
     "jquery": "^3.5.1",
     "nexusui": "^2.1.6",
     "osc": "^2.4.1",
-    "socket.io": "^3.0.4"
+    "socket.io": "^3.0.4",
+    "yargs": "^16.2.0"
   },
-  "pkg" : {
-	"assets" : ["public/**/*", "node_modules/nexusui/dist/*", "node_modules/jquery/dist/*", "node_modules/socket.io/client-dist/*"]
+  "pkg": {
+    "assets": [
+      "public/**/*",
+      "node_modules/nexusui/dist/*",
+      "node_modules/jquery/dist/*",
+      "node_modules/socket.io/client-dist/*"
+    ]
   },
-  "bin" : {
-	"piEQ" : "index.js"
+  "bin": {
+    "piEQ": "index.js"
   }
 }

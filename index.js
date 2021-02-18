@@ -16,8 +16,10 @@ const bodyParser = require('body-parser');
 
 const { spawn } = require('child_process');
 
+const yargs = require('yargs');
+
 app.use('/scripts', express.static(__dirname + '/node_modules/'));
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -26,7 +28,7 @@ http.listen(port, () => {
   console.log(`piEQ Active! Adjust settings at http://localhost:${port}`)
 });
 
-var udpPort = new osc.UDPPort({
+const udpPort = new osc.UDPPort({
     localAddress: "0.0.0.0",
     localPort: 3001,
     metadata: true
@@ -43,10 +45,10 @@ udpPort.on("message", function(oscMsg, timeTag, info){
 
 udpPort.open();
 
-//create directories for current states and presets
-var dataDir = path.join(homedir, "/AppData/Local/piEQ");
-var currentStateDir = path.join(dataDir, "/currentstate");
-var presetDir = path.join(dataDir, "/presets");
+//create directories for current states and presets.  Need to add Mac/Linux paths via os
+const dataDir = path.join(homedir, "/AppData/Local/piEQ");
+const currentStateDir = path.join(dataDir, "/currentstate");
+const presetDir = path.join(dataDir, "/presets");
 
 if (!fs.existsSync(dataDir)){
 	fs.mkdirSync(dataDir);
@@ -61,7 +63,7 @@ if (!fs.existsSync(presetDir)){
 }
 
 //Load SuperCollider 
-var scCode = String.raw`
+const scCode = String.raw`
 (
 Server.killAll; //start by cleaning up any other servers just in case
 
@@ -73,30 +75,11 @@ Server.killAll; //start by cleaning up any other servers just in case
 		"i", {
 			Server.default.options.inDevice = ~arguments[i+1];
 		},
-		"input", {
-			Server.default.options.inDevice = ~arguments[i+1];
-		},
 		"o", {
 			Server.default.options.outDevice = ~arguments[i+1];
 		},
-		"output", {
-			Server.default.options.outDevice = ~arguments[i+1];
-		},
+
 		"l", {
-			"Input Devices:".postln;
-			ServerOptions.inDevices.do({arg item, i;
-				item.postln;
-			});
-			"".postln;
-			"Output Devices:".postln;
-			ServerOptions.outDevices.do({arg item, i;
-				item.postln;
-			});
-			Server.killAll;
-			~nodeAddress.sendMsg('/exit');
-			0.exit;
-		},
-		"list", {
 			"Input Devices:".postln;
 			ServerOptions.inDevices.do({arg item, i;
 				item.postln;
@@ -340,10 +323,10 @@ s.waitForBoot({
 `
 
 //Find SC installation directory, need to add error if not found
-var scdir = glob.sync("C:/Program Files/SuperCollider-3*/");
+const scdir = glob.sync("C:/Program Files/SuperCollider-3*/");
 
 // create scd file somewhere accessible
-var scdPath = path.join(dataDir, "/audio/piEQ.scd");
+const scdPath = path.join(dataDir, "/audio/piEQ.scd");
 
 if (!fs.existsSync(scdPath)){
 	fs.mkdirSync(path.join(dataDir, "/audio"));
@@ -352,14 +335,39 @@ if (!fs.existsSync(scdPath)){
 fs.writeFileSync(scdPath, scCode);
 
 //Spawn supercollider with arguments.  Probably need to check for invalid args, etc.
-var arguments = process.argv.slice(2);
-arguments.unshift(scdPath);
+const argv = yargs
+	.option('input', {
+		alias : 'i',
+		description : 'Set the input device',
+		type : 'string',
+	})
+	.option('output', {
+		alias : 'o',
+		description : 'Set the output device',
+		type : 'string',
+	})
+	.command('list', 'List all available audio devices')
+	.alias('list', 'l')
+	.help()
+	.alias ('help', 'h')
+	.argv;
+	
+let scArgs = [scdPath];
+if (argv.input){
+	scArgs.push('i', argv.input);
+}
+if (argv.output){
+	scArgs.push('o', argv.output);
+}
+if (argv.list){
+	scArgs.push('l');
+}
 
-spawn("sclang.exe", arguments, {cwd: scdir[scdir.length-1]}).stdout.pipe(process.stdout);		
+spawn("sclang.exe", scArgs, {cwd: scdir[scdir.length-1]}).stdout.pipe(process.stdout);		
 
 //format and send control data over OSC to audio engine
 function sendToAudioServer(filter, param, value){
-	var address = "/" + filter + "/" + param;
+	let address = "/" + filter + "/" + param;
 	udpPort.send({
 		address: address,
 		args: [
@@ -374,7 +382,7 @@ function sendToAudioServer(filter, param, value){
 
 //save current state to file
 app.post('/savecurrentstate', function (req, res){
-	var body = JSON.stringify(req.body);
+	let body = JSON.stringify(req.body);
 	fs.writeFile(currentStateDir + '/currentstate.json', body, function (err){
 		if (err) return console.log(err);
 		res.end();
@@ -383,8 +391,8 @@ app.post('/savecurrentstate', function (req, res){
 
 //save a preset to a file
 app.post('/savepreset', function (req, res){
-	var body = JSON.stringify(req.body);
-	var filepath = presetDir + "/" + req.body.name + ".json";
+	let body = JSON.stringify(req.body);
+	let filepath = presetDir + "/" + req.body.name + ".json";
 	fs.writeFile(filepath, body, function (err){
 		if (err) return console.log(err);
 		res.end();
@@ -393,7 +401,7 @@ app.post('/savepreset', function (req, res){
 
 //read a preset file and send back to client
 app.post('/loadpreset', function (req, res){
-	var filepath = presetDir + "/" + req.body.preset + ".json";
+	let filepath = presetDir + "/" + req.body.preset + ".json";
 	//console.log (req.body);
 	fs.readFile (filepath, (err, data) => {
 		if (err) return console.log(err);
@@ -413,7 +421,7 @@ app.get('/listpresets', function (req, res){
 
 //read the current state file and send back to client
 app.get('/loadcurrentstate', function (req, res){
-	var filepath = currentStateDir + "/currentstate.json"
+	let filepath = currentStateDir + "/currentstate.json"
 	fs.readFile (filepath, (err, data) => {
 		if (err) return console.log(err);
 		res.send(data);
@@ -431,12 +439,12 @@ io.on('connection', (socket) => {
 
 //Load last saved current state and send to audio server on load
 function currentStateOnload() {
-	var filepath = currentStateDir + "/currentstate.json";
+	let filepath = currentStateDir + "/currentstate.json";
 	if (fs.existsSync(filepath)){
 		fs.readFile (filepath, (err, data) => {
 			if (err) return console.log(err);
-			var object = JSON.parse(data);
-			var filterNumber;
+			let object = JSON.parse(data);
+			let filterNumber;
 			for (var key in object) {
 				if (object.hasOwnProperty(key)){
 					if (key.includes("gn")){

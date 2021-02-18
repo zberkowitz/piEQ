@@ -9,30 +9,11 @@ Server.killAll; //start by cleaning up any other servers just in case
 		"i", {
 			Server.default.options.inDevice = ~arguments[i+1];
 		},
-		"input", {
-			Server.default.options.inDevice = ~arguments[i+1];
-		},
 		"o", {
 			Server.default.options.outDevice = ~arguments[i+1];
 		},
-		"output", {
-			Server.default.options.outDevice = ~arguments[i+1];
-		},
+
 		"l", {
-			"Input Devices:".postln;
-			ServerOptions.inDevices.do({arg item, i;
-				item.postln;
-			});
-			"".postln;
-			"Output Devices:".postln;
-			ServerOptions.outDevices.do({arg item, i;
-				item.postln;
-			});
-			Server.killAll;
-			~nodeAddress.sendMsg('/exit');
-			0.exit;
-		},
-		"list", {
 			"Input Devices:".postln;
 			ServerOptions.inDevices.do({arg item, i;
 				item.postln;
