@@ -4,8 +4,6 @@ export DISPLAY=:0.0
 sleep 10 # can be lower (5) for rpi3
 
 # settings for dac+ dsp
-dsptoolkit set-volume 100%
-dsptoolkit set-limit 0db
 dsptoolkit write-mem 0xF106 0x0003
 dsptoolkit write-mem 0xF146 0x0004
 dsptoolkit write-mem 0xF107 0x0000
