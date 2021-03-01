@@ -8,5 +8,5 @@ The purpose of piEQ is to apply enable listeners to apply flexible parametric eq
 
 ## UI screenshots
 
-![piEQ Sliders](https://github.com/zberkowitz/piEQ/blob/main/doc/screenshots/piEQ_screenshot_Page_1.jpg?raw=true)
-![piEQ FR Plot](https://github.com/zberkowitz/piEQ/blob/main/doc/screenshots/piEQ_screenshot_Page_2.jpg?raw=true)
+![piEQ Sliders](https://github.com/zberkowitz/piEQ/blob/main/doc/screenshots/screenshot_slider?raw=true)
+![piEQ FR Plot](https://github.com/zberkowitz/piEQ/blob/main/doc/screenshots/screnshot_frplot?raw=true)
