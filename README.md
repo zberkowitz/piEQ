@@ -1,3 +1,5 @@
 # piEQ
 
-This is the development repo for the Raspberry Pi-based DAC with the currently terrible working name "piEQ" 
+piEQ is a Raspberry Pi based standalone equalizer appliance and portable desktop application.
+
+For information on the portable desktop application, see the [portable branch](../tree/portable/).
